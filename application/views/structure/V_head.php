@@ -24,6 +24,9 @@
   <script src="<?= base_url() ?>assets/js/argon-dashboard.min.js?v=2.0.4"></script>
   <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+  <link rel="stylesheet" href="<?= base_url() ?>assets/iziToast/dist/css/iziToast.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
   <style>
     @media screen and (min-width: 992px) {
@@ -65,5 +68,28 @@
     .breadcrumb-item a {
         text-decoration:none;
     }
+
+    .select2-container--default .select2-selection--single {
+        min-height: 38px;
+        padding-top: 5px;
+        border: 1px solid rgba(170, 170, 170, 0.3);
+        border-radius: 5px !important;
+    }
+
+    .select2-container--default .select2-selection--multiple {
+        border: 1px solid rgba(170, 170, 170, 0.3);
+        border-radius: 5px !important;
+        min-height: 38px;
+        padding-top: 5px;
+    }
+
+    .select2-selection__arrow {
+        margin-top: 5px;
+    }
+
+    .select2-container--default .select2-selection--multiple:active {
+        border: 1px solid #197ED1;
+    }
+
   </style>
 </head>

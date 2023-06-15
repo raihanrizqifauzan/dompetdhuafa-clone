@@ -104,7 +104,7 @@
                             </ul>
                         </li>
                     </ul>
-              </div>
-          </div>
-    </nav>
-    <!-- End Navbar -->
+                </div>
+            </div>
+        </nav>
+        <!-- End Navbar -->
