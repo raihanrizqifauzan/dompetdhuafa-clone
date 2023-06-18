@@ -33,14 +33,18 @@
                 <div class="w-100 p-4">
                     <div class="p-4 shadow">
                         <div class="d-flex justify-content-end">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDonatur">Pilih Donatur</button>
+                            <button class="btn btn-warning mx-1">Print Kuitansi</button>
+                            <button class="btn btn-secondary mx-1">Print Wakaf</button>
+                            <button class="btn btn-default mx-1">Kirim Notifikasi</button>
+                            <button class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#modalDonatur">Ganti Donatur</button>
+                            <button class="btn btn-danger mx-1">Void</button>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between align-items-center">
-                            <div><b>Donasi Baru</b></div>
+                            <div><b>Edit Donasi </b><span>#<?= $donasi->id ?></span> <span class="badge bg-default"><?= $donasi->status_donasi ?></span></div>
                             <div>
                                 <small>Tanggal Donasi</small>
-                                <input type="date" value="<?= date("Y-m-d") ?>" id="tgl_donasi" class="form-control" style="border:none;border-bottom:1px solid #ced4da">
+                                <input type="date" value="<?= $donasi->tgl_donasi ?>" id="tgl_donasi" class="form-control" style="border:none;border-bottom:1px solid #ced4da">
                             </div>
                         </div>
                         <hr>
@@ -50,32 +54,32 @@
                                 <tr>
                                     <th>Donatur</th>
                                     <th>:</th>
-                                    <td width="80%" id="nama_donatur"></td>
+                                    <td width="80%" id="nama_donatur"><?= $donasi->nama_lengkap ?></td>
                                 </tr>
                                 <tr>
                                     <th>Email</th>
                                     <th>:</th>
-                                    <td width="80%" id="email_donatur"></td>
+                                    <td width="80%" id="email_donatur"><?= $donasi->email_donatur ?></td>
                                 </tr>
                                 <tr>
                                     <th>Telp</th>
                                     <th>:</th>
-                                    <td width="80%" id="no_hp"></td>
+                                    <td width="80%" id="no_hp"><?= $donasi->no_hp ?></td>
                                 </tr>
                                 <tr>
                                     <th>Address</th>
                                     <th>:</th>
-                                    <td width="80%" id="address"></td>
+                                    <td width="80%" id="address"><?= $donasi->address ?></td>
                                 </tr>
                                 <tr>
                                     <th>Tipe</th>
                                     <th>:</th>
-                                    <td width="80%" id="tipe_donatur"></td>
+                                    <td width="80%" id="tipe_donatur"><?= $donasi->tipe_donatur ?></td>
                                 </tr>
                                 <tr>
                                     <th>Kode Rekening</th>
                                     <th>:</th>
-                                    <td width="80%" id="kode_rekening"></td>
+                                    <td width="80%" id="kode_rekening"><?= $donasi->kode_rekening ?></td>
                                 </tr>
                             </table>
                         </div>
@@ -89,10 +93,10 @@
                                 Donasi Item
                             </div>
                             <div>
-                                <button class="btn btn-primary" id="addItem">Tambah Item</button>
+                                <button class="btn btn-info text-light" id="addItem">Tambah Item</button>
                             </div>
                         </div>
-                        <div class="table-responsive p-4 shadow">
+                        <div class="table-responsive pt-4 px-4 shadow">
                             <table class="table w-100 table-hover">
                                 <thead>
                                     <tr class="text-center">
@@ -109,6 +113,11 @@
                                     
                                 </tbody>
                             </table>
+                            <div class="mt-2 form-group row justify-content-end">
+                                <div class="col-lg-6 text-end">
+                                    <button id="saveDonationItem" class="btn btn-info text-light">Save Donation Item</button>
+                                </div>
+                            </div>
                         </div>
                         <div class="mt-4 p-4 shadow">
                             <div class="d-flex justify-content-between align-items-center border-bottom py-4 mt-4">
@@ -119,42 +128,42 @@
                                     <label for="">Pilih Departemen</label>
                                     <select class="form-control" id="departemen">
                                         <option value="">- PILIH -</option>
-                                        <option value="Retail-Konter">Retail-Konter</option>
-                                        <option value="Retail-Bank">Retail-Bank</option>
-                                        <option value="MPZ">MPZ</option>
-                                        <option value="Penjemputan">Penjemputan</option>
+                                        <option value="Retail-Konter" <?= $donasi->departemen == "Retail-Konter" ? "selected" : "" ?>>Retail-Konter</option>
+                                        <option value="Retail-Bank" <?= $donasi->departemen == "Retail-Bank" ? "selected" : "" ?>>Retail-Bank</option>
+                                        <option value="MPZ" <?= $donasi->departemen == "MPZ" ? "selected" : "" ?>>MPZ</option>
+                                        <option value="Penjemputan" <?= $donasi->departemen == "Penjemputan" ? "selected" : "" ?>>Penjemputan</option>
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="mt-4 p-4 shadow">
-                            <div class="d-flex justify-content-between align-items-center border-bottom py-4 mt-4">
-                                <div><b>Pembayaran</b></div>
-                            </div>
-                            <div class="mt-4 form-group row">
-                                <div class="col-lg-12">
-                                    <label for="">Jenis Pembayaran</label>
-                                    <select class="form-control" id="jenis_pembayaran">
-                                        <option value="">- PILIH -</option>
-                                        <option value="tunai">TUNAI</option>
-                                        <option value="edc">EDC</option>
-                                        <option value="barang">BARANG</option>
-                                        <option value="mitra konter">MITRA KONTER</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="mt-4 form-group row justify-content-end">
-                                <div class="col-lg-6">
-                                    <div class="d-flex justify-content-start w-100 align-items-center">
-                                        <label class="">Total Donasi</label>
-                                        <input type="text" class="form-control text-end" id="total_donasi" readonly>
-                                    </div>
+                            <div class="form-group row justify-content-end">
+                                <div class="col-lg-6 text-end">
+                                    <button id="saveDepartment" class="btn btn-info text-light">Save Department</button>
                                 </div>
                             </div>
                         </div>
-                        <hr>
-                        <div class="d-flex px-4 pt-2 justify-content-end">
-                            <button class="btn btn-primary" id="saveDonasi">Simpan</button>
+                        <div class="row mt-4 p-4 shadow justify-content-end mx-1">
+                            <div class="col-lg-6">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <div>Pembayaran Tunai :</div>
+                                    <div>Rp. 20.000,00</div>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <div>Pembayaran Bank :</div>
+                                    <div>Rp. 0,00</div>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <div>Pembayaran Mitra :</div>
+                                    <div>Rp. 0,00</div>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <div>Pembayaran Barang :</div>
+                                    <div>Rp. 0,00</div>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <div>Total Donasi :</div>
+                                    <div>Rp. 20.000,00</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -162,6 +171,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Modal Donatur -->
 <div class="modal fade" id="modalDonatur" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -202,7 +212,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Item Baru</h5>
-                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
             </div>
             <div class="modal-body">
                 <div class="form-group row">
@@ -294,9 +303,14 @@
 
 <script>
     var list_item = `<?= $list_item_donasi ?>`;
-    var action_item = "add";
+    var id_donasi = `<?= $donasi->id ?>`;
+    list_item = list_item == "" ? "" : JSON.parse(list_item);
+    var list_item_old = list_item;
     $(document).ready(function () {
-        var data = JSON.parse(list_item);
+        var data = list_item;
+        list_item.forEach(e => {
+            e.temp_id = null
+        });
         loadItemDonasi(data)
     })
 
@@ -316,8 +330,9 @@
     $(document).on("click", ".select-donatur", function (e) {
         var id_donatur = $(this).data("id");
         $.ajax({
-            type: 'GET',
-            url: '<?= base_url('donatur/get_donatur_by_id') ?>?id_donatur=' + id_donatur,
+            type: 'POST',
+            url: '<?= base_url('donasi/update_email_donatur') ?>',
+            data: {id_donasi: id_donasi, id_donatur: id_donatur},
             success: function(response) {
                 var res = JSON.parse(response);
                 if (res.status) {
@@ -330,6 +345,7 @@
                     $("#address").html(data.address);
                     $("#tipe_donatur").html(data.tipe_donatur);
                     $("#kode_rekening").html(data.kode_rekening);
+                    showSuccessMessage(res.message);
                 } else {
                     showErrorMessage(res.message);
                 }
@@ -391,7 +407,6 @@
 
     function loadItemDonasi(data) {
         var html = "";
-        console.log(data);
         var total_donasi = 0;
         data.forEach(e => {
             var nama_project = "";
@@ -413,11 +428,16 @@
             }
             total_donasi += parseInt(jumlah);
 
+            var id_target = e.id;
+            if (e.id == null) {
+                id_target = e.temp_id;
+            }
+
             html += `
             <tr>
-                <td data-bs-toggle="collapse" data-bs-target="#collapse${e.id}">
+                <td data-bs-toggle="collapse" data-bs-target="#collapse${id_target}">
                     <span>(<i class="fa fa-plus td-icon"></i>)</span> ${e.jenis_donasi}
-                    <div class="collapse mt-4 w-100" id="collapse${e.id}">
+                    <div class="collapse mt-4 w-100" id="collapse${id_target}">
                         <div>Atas Nama : ${e.atas_nama}</div>
                         ${nama_project}
                         ${nama_program}
@@ -430,10 +450,7 @@
                 <td>
                     <div class="d-flex justify-content-center">
                         <div class="mx-1">
-                            <i class="fa fa-edit text-info edit-item" data-id="${e.id}"></i>
-                        </div>
-                        <div class="mx-1">
-                            <i class="fa fa-trash text-danger delete-item" data-id="${e.id}"></i>
+                            <i class="fa fa-edit text-info edit-item" data-id="${id_target}"></i>
                         </div>
                     </div>
                 </td>
@@ -443,115 +460,127 @@
 
         $("#tbItem").html(html);
     }
+    
+    $("#saveDepartment").click(function (e) {
+        var departemen = $("#departemen").val();
+        $.ajax({
+            type: 'POST',
+            url: '<?= base_url('donasi/update_departemen') ?>',
+            data: {id_donasi: id_donasi, departemen: departemen},
+            success: function(response) {
+                var res = JSON.parse(response);
+                if (res.status) {
+                    showSuccessMessage(res.message);
+                } else {
+                    showErrorMessage(res.message);
+                    $("#departemen").val("<?= $donasi->departemen ?>").trigger("change");
+                }
+            }
+        });
+    })
+
+    $("#saveDonationItem").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '<?= base_url('donasi/update_item_donasi') ?>',
+            data: {id_donasi: id_donasi, list_item: list_item},
+            success: function(response) {
+                var res = JSON.parse(response);
+                if (res.status) {
+                    showSuccessMessage(res.message);
+                } else {
+                    showErrorMessage(res.message);
+                    list_item = list_item_old;
+                    loadItemDonasi(list_item);
+                }
+            }
+        });
+    })
+
+    function getRandomString(length) {
+        let result = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const charactersLength = characters.length;
+        let counter = 0;
+        while (counter < length) {
+          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+          counter += 1;
+        }
+        return result;
+    }
+
 
     $("#saveItem").click(function () {
-        var obj = {
-            id_item: $("#id_item").val(),
-            jenis_donasi: $("#jenis_donasi").val(),
-            program_donasi: $("#program_donasi").val(),
-            project_donasi: $("#project_donasi").val(),
-            tipe_donasi: $("#tipe_donasi").val(),
-            atas_nama: $("#atas_nama").val(),
-            kategori_barang: $("#kategori_barang").val(),
-            nama_barang: $("#nama_barang").val(),
-            jumlah_barang: $("#jumlah_barang").val(),
-            harga_satuan: $("#harga_satuan").val(),
-            nominal: $("#nominal").val(),
-            keterangan: $("#keterangan").val(),
-        };
-
         if (action_item == "add") {
-            var _url = '<?= base_url('donasi/save_temp_item') ?>';
+            var i = getRandomString(10);
+            var obj = {
+                id: i,
+                temp_id: i,
+                id_donasi: "<?= $donasi->id ?>",
+                id_jenis_donasi: $("#jenis_donasi").val(),
+                jenis_donasi: $("#jenis_donasi option:selected").text(),
+                id_program_donasi: $("#program_donasi").val(),
+                program_donasi: $("#program_donasi option:selected").text(),
+                id_project_donasi: $("#project_donasi").val(),
+                nama_project: $("#project_donasi option:selected").text(),
+                tipe_donasi: $("#tipe_donasi").val(),
+                atas_nama: $("#atas_nama").val(),
+                kategori_barang: $("#kategori_barang").val(),
+                nama_barang: $("#nama_barang").val(),
+                jumlah_barang: $("#jumlah_barang").val(),
+                harga_satuan: $("#harga_satuan").val(),
+                nominal: $("#nominal").val(),
+                keterangan: $("#keterangan").val(),
+            };
+            list_item.push(obj);
         } else {
-            var _url = '<?= base_url('donasi/update_temp_item') ?>';
+            var obj = {
+                id: $("#id_item").val(),
+                temp_id: $("#id_item").val(),
+                id_donasi: "<?= $donasi->id ?>",
+                id_jenis_donasi: $("#jenis_donasi").val(),
+                jenis_donasi: $("#jenis_donasi option:selected").text(),
+                id_program_donasi: $("#program_donasi").val(),
+                program_donasi: $("#program_donasi option:selected").text(),
+                id_project_donasi: $("#project_donasi").val(),
+                nama_project: $("#project_donasi option:selected").text(),
+                tipe_donasi: $("#tipe_donasi").val(),
+                atas_nama: $("#atas_nama").val(),
+                kategori_barang: $("#kategori_barang").val(),
+                nama_barang: $("#nama_barang").val(),
+                jumlah_barang: $("#jumlah_barang").val(),
+                harga_satuan: $("#harga_satuan").val(),
+                nominal: $("#nominal").val(),
+                keterangan: $("#keterangan").val(),
+            };
+            console.log("list_item", list_item);
+            console.log("obj", obj);
+
+            var idx = null;
+            for (let i = 0; i < list_item.length; i++) {
+                if (list_item[i].id == obj.id) {
+                    idx = i;
+                    break;
+                }
+            }
+
+            if (idx == null) {
+                showErrorMessage("Terjadi Kesalahan");
+                return false;
+            }
+            
+            list_item[idx] = obj;
         }
 
-        $.ajax({
-            type: 'POST',
-            url: _url,
-            data: obj,
-            success: function(response) {
-                var res = JSON.parse(response);
-                if (res.status) {
-                    $("#modalItem").modal("hide");
-                    loadItemDonasi(res.data);
-                } else {
-                    showErrorMessage(res.message);
-                }
-            }
-        });
-    })
-
-    $("#tbItem").on("click", ".delete-item", function () {
-        var id = $(this).data("id");
-        var obj = $(this);
-        $.ajax({
-            type: 'POST',
-            url: '<?= base_url('donasi/delete_item') ?>',
-            data: {id: id},
-            success: function(response) {
-                var res = JSON.parse(response);
-                console.log(res);
-                if (res.status) {
-                    $(obj).closest("tr").remove();
-                } else {
-                    showErrorMessage(res.message);
-                }
-            }
-        });
+        loadItemDonasi(list_item);
+        $("#modalItem").modal("hide")
     })
     
-    $("#tbItem").on("click", ".edit-item", function () {
-        var id = $(this).data("id");
-        var obj = $(this);
-        $.ajax({
-            type: 'POST',
-            url: '<?= base_url('donasi/get_item_detail') ?>',
-            data: {id: id},
-            success: function(response) {
-                var res = JSON.parse(response);
-                if (res.status) {
-                    var data = res.data;
-                    $("#jenis_donasi").val(data.id_jenis_donasi).trigger("change");
-                    setTimeout(function() {  
-                        $("#program_donasi").val(data.id_program_donasi).trigger("change"); 
-                        setTimeout(function() {  $("#project_donasi").val(data.id_project_donasi).trigger("change"); }, 1000);
-                    }, 1000);
-                    action_item = "update";
-                    $("#id_item").val(data.id);
-                    $("#atas_nama").val(data.atas_nama);
-                    $("#tipe_donasi").val(data.tipe_donasi).trigger("change");
-                    $("#kategori_barang").val(data.kategori_barang);
-                    $("#nama_barang").val(data.nama_barang);
-                    $("#jumlah_barang").val(data.jumlah_barang);
-                    $("#harga_satuan").val(data.harga_satuan);
-                    if (data.tipe_donasi == "uang") {
-                        $("#nominal").val(data.nominal);
-                    } else {
-                        $("#nominal").val(parseInt(data.jumlah_barang) * parseInt(data.harga_satuan));
-                    }
-                    $("#keterangan").val(data.keterangan);
-
-                    $("#modalItem").modal("show");
-                } else {
-                    showErrorMessage(res.message);
-                }
-            }
-        });
-    })
-
-    $("#jumlah_barang, #harga_satuan").keyup(function () {
-        var jumlah_barang = $("#jumlah_barang").val() == "" ? 0 : parseInt($("#jumlah_barang").val());
-        var harga_satuan = $("#harga_satuan").val() == "" ? 0 : parseInt($("#harga_satuan").val())
-        var nominal = jumlah_barang * harga_satuan;
-        $("#nominal").val(nominal); 
-    })
-
     $("#tbItem").on("click", `td`, function () {
         if ($(this).find(".fa-edit").length > 0) {
             return false;
         }
-
+    
         if ($(this).attr(`[data-bs-toggle="collapse"]`) == undefined) {
             var check = $(this).closest("tr").find(`.collapse`).hasClass("show");
             if (check) {
@@ -560,7 +589,7 @@
                 $(this).closest("tr").find(`.collapse`).addClass("show");
             }
         }
-
+    
         var check_icon = $(this).closest("tr").find(".td-icon").hasClass("fa-plus");
         console.log(check_icon);
         if (check_icon) {
@@ -568,7 +597,7 @@
         } else {
             $(this).closest("tr").find(".td-icon").removeClass("fa-minus").addClass("fa-plus");
         }
-
+    
         if ($(".td-icon.fa-minus").length > 0) {
             $(".th-icon").removeClass("fa-plus").addClass("fa-minus");
         } else {
@@ -576,26 +605,46 @@
         }
     });
 
-    $("#saveDonasi").click(function () {
-        var obj = {
-            email_donatur: $("#email_donatur").html(),
-            tgl_donasi: $("#tgl_donasi").val(),
-            departemen: $("#departemen").val(),
-            jenis_pembayaran: $("#jenis_pembayaran").val(),
-        };
+    $("#tbItem").on("click", ".edit-item", function () {
+        var id = $(this).data("id");
+        var obj = $(this);
 
-        $.ajax({
-            type: 'POST',
-            url: "<?= base_url('donasi/save_donasi') ?>",
-            data: obj,
-            success: function(response) {
-                var res = JSON.parse(response);
-                if (res.status) {
-                    window.location.href = res.data.redirect_url;
-                } else {
-                    showErrorMessage(res.message);
+        if (isNaN(id)) {
+            list_item.forEach(e => {
+                if (e.temp_id == id) {
+                    data = e;
                 }
-            }
-        });
+            });
+        } else {
+            var data = list_item.filter(o => o.id.includes(id));
+            data = data[0];
+        }
+
+        if (data.length == 0) {
+            showErrorMessage("Terjadi Kesalahan");
+            return false;
+        }
+
+        $("#jenis_donasi").val(data.id_jenis_donasi).trigger("change");
+        setTimeout(function() {  
+            $("#program_donasi").val(data.id_program_donasi).trigger("change"); 
+            setTimeout(function() {  $("#project_donasi").val(data.id_project_donasi).trigger("change"); }, 1000);
+        }, 1000);
+        action_item = "update";
+        var id = data.id == null ? data.id : data.temp_id;
+        $("#id_item").val(data.id);
+        $("#atas_nama").val(data.atas_nama);
+        $("#tipe_donasi").val(data.tipe_donasi).trigger("change");
+        $("#kategori_barang").val(data.kategori_barang);
+        $("#nama_barang").val(data.nama_barang);
+        $("#jumlah_barang").val(data.jumlah_barang);
+        $("#harga_satuan").val(data.harga_satuan);
+        if (data.tipe_donasi == "uang") {
+            $("#nominal").val(data.nominal);
+        } else {
+            $("#nominal").val(parseInt(data.jumlah_barang) * parseInt(data.harga_satuan));
+        }
+        $("#keterangan").val(data.keterangan);
+        $("#modalItem").modal("show");
     })
 </script>

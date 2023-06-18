@@ -54,3 +54,4 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 $route['donasi/counter/new'] = 'donasi/new_counter';
+$route['donasi/counter/list'] = 'donasi/counter_list';

@@ -252,6 +252,7 @@ class Donasi extends CI_Controller {
         $email_user = $this->session->email_user;
 
         try {
+			$this->db->trans_start();
             $list_required = ['email_donatur', 'tgl_donasi', 'departemen', 'jenis_pembayaran'];
 
             foreach ($list_required as $key => $field) {
@@ -264,6 +265,11 @@ class Donasi extends CI_Controller {
             $temp_donasi = $this->M_donasi->getTempDonasi();
             if (empty($temp_donasi)) {
                 throw new Exception("Item Donasi Harus diisi");
+            }
+
+            $data_donatur = $this->M_donatur->getDonaturByEmail($email_donatur);
+            if (empty($data_donatur)) {
+                throw new Exception("Email donatur tidak valid");
             }
 
             $item_donasi = [];
@@ -310,16 +316,252 @@ class Donasi extends CI_Controller {
             }
             $insert_detail_item = $this->M_donasi->insertBatchItemDonasi($item_donasi);
 
+            $data_log_notifikasi = [
+                'id_donasi' => $id_donasi_inserted,
+                'keterangan' => "Pengiriman Whatsapp ke Nomor $data_donatur->no_hp Berhasil",
+                'datetime_notifikasi' => date("Y-m-d H:i:s"),
+                'email_notifikasi' => $email_donatur,
+                'no_hp' => $data_donatur->no_hp,
+            ];
+            $insert_log_notifikasi = $this->M_donasi->insertLog($data_log_notifikasi, 'tb_log_notifikasi');
+
+            $data_log_donasi = [
+                'id_donasi' => $id_donasi_inserted,
+                'datetime_action' => date("Y-m-d H:i:s"),
+                'email_user' => $email_user,
+                'keterangan' => "Membuat Donasi via Konter"
+            ];
+            $insert_log_notifikasi = $this->M_donasi->insertLog($data_log_donasi, 'tb_donasi_log');
+
+            $this->db->trans_commit();
             $this->M_donasi->deleteTempItemDonasi();
             $flashdata = ['notif_message' => "Berhasil menyimpan data donasi", 'notif_type' => "success"];
             $this->session->set_userdata('flashdata', $flashdata);
 
             $data_donasi['list_item'] = $item_donasi;
+            $data_donasi['redirect_url'] = base_url('donasi/detail?id=').base64_encode($id_donasi_inserted);
 
             $response = ['status' => true, 'message' => "Donasi berhasil di tambahkan", 'data' => $data_donasi];
             echo json_encode($response);
         } catch (Exception $e) {
+            $this->db->trans_rollback();
             echo json_encode(['status' => false, 'message' => $e->getMessage()]);
         }
     }
+
+	public function counter_list()
+	{
+		$this->load->view("structure/V_head");
+		$this->load->view("structure/V_navbar");
+		$this->load->view("V_counter_list.php");
+		$this->load->view("structure/V_footer");
+		$this->load->view("structure/V_foot");
+	}	
+
+	public function detail()
+	{
+        $data['list_jenis_donasi'] = $this->M_donasi->getJenisDonasi();
+        $id_donasi = $this->input->get('id');
+        $id_donasi = base64_decode($id_donasi);
+        $data['donasi'] = $this->M_donasi->getDonasiById($id_donasi);
+        $data['list_item_donasi'] = json_encode($this->M_donasi->getDonasiItem($id_donasi));
+		$this->load->view("structure/V_head", $data);
+		$this->load->view("structure/V_navbar");
+		$this->load->view("V_counterdonasi_detail");
+		$this->load->view("structure/V_footer");
+		$this->load->view("structure/V_foot");
+	}	
+
+
+    public function get_counter_list()
+	{
+		$list = $this->M_donasi->get_datatables_counter();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $item) {
+            $row = [];
+            $row[] = '<div class="text-center">'.$item->id.'</div>';
+            $row[] = $item->tgl_donasi;
+            $row[] = strtoupper($item->nama_lengkap);
+            $row[] = '<div class="text-center"><span class="badge bg-primary">'.strtoupper($item->status_donasi).'</span></div>';
+            $row[] = '<div class="text-center">COUNTER</div>';
+            $row[] = "<span>BRANCH TEST 001</span>";
+            $row[] = "<span></span>";
+            $row[] = '<div class="text-end">'.$item->jumlah_item_donasi.'</div>';
+            $row[] = '<div class="text-end">Rp'.number_format($item->total_donasi).'</div>';
+            $row[] = '<div class="d-flex justify-content-center text-center mx-1">
+                <div>
+                    <a class="btn btn-default" href="'.base_url('donasi/detail?id=').base64_encode($item->id).'" data-id="'.$item->id.'">
+                        <i class="fa fa-eye"></i>
+                    </a>
+                </div>
+                <div class="mx-1">
+                    <a class="btn btn-danger" href="javascript:void(0)" data-id="'.$item->id.'">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </div>
+			</div>';
+
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->M_donasi->get_total_counter(),
+            "recordsFiltered" => $this->M_donasi->get_total_counter_filtered(),
+            "data" => $data,
+        );
+
+        echo json_encode($output);
+	}
+
+    function update_email_donatur() {
+        $id_donatur = $this->input->post('id_donatur', TRUE);
+        $id_donasi = $this->input->post('id_donasi', TRUE);
+        $email_user = $this->session->email_user;
+
+        $donatur = $this->M_donatur->getDonaturById($id_donatur);
+        $donasi = $this->M_donasi->getDonasiById($id_donasi);
+        try {
+            if (empty($donatur)) {
+                throw new Exception("Donatur tidak ditemukan");
+            }
+
+            if (empty($donasi)) {
+                throw new Exception("Terjadi Kesalahan");
+            }
+
+            $data_donasi = ['email_donatur' => $donatur->email_donatur];
+            $this->M_donasi->updateData($id_donasi, $data_donasi);
+
+            $log_donasi = [
+                'id_donasi' => $id_donasi,
+                'datetime_action' => date("Y-m-d H:i:s"),
+                'email_user' => $email_user,
+                'keterangan' => "Memperbarui donatur dari donasi dengan ID $id_donasi",
+            ];
+            $insert_log_notifikasi = $this->M_donasi->insertLog($log_donasi, 'tb_donasi_log');
+
+            $response = ['status' => true, 'message' => "Sukses mengganti donatur", 'data' => $donatur];
+        } catch (Exception $e) {
+            $response = ['status' => false, 'message' => $e->getMessage()];
+        }
+        echo json_encode($response);
+    }
+
+    public function update_item_donasi() {
+        $id_donasi = $this->input->post("id_donasi", TRUE);
+        $list_item = $this->input->post("list_item", TRUE);
+
+        try {
+			$this->db->trans_start();
+            $donasi = $this->M_donasi->getDonasiById($id_donasi);
+            if (empty($donasi)) {
+                throw new Exception("Error Processing Request");
+            }
+
+            $total_donasi = $donasi->total_donasi;
+
+            $item_insert = [];
+            $item_update = [];
+            // echo json_encode($list_item);die;
+            $total_donasi_update = 0;
+            foreach ($list_item as $key => $item) {
+                if ($item['tipe_donasi'] == "barang") {
+                    $item['nominal'] = 0;
+                } else {
+                    $item['kategori_barang'] = "";
+                    $item['nama_barang'] = "";
+                    $item['jumlah_barang'] = 0;
+                    $item['harga_satuan'] = 0;
+                }
+
+                
+
+                if ($item['tipe_donasi'] == "uang") {
+                    $total_donasi_update += $item['nominal'];
+                } else {
+                    $total_donasi_update += $item['jumlah_barang'] * $item['harga_satuan'];
+                }
+
+                if (!is_numeric($item['id'])) {
+                    $item_insert[] = [
+                        'id_donasi' => $item['id_donasi'],
+                        'id_jenis_donasi' => $item['id_jenis_donasi'],
+                        'id_program_donasi' => $item['id_program_donasi'],
+                        'id_project_donasi' => $item['id_project_donasi'],
+                        'tipe_donasi' => $item['tipe_donasi'],
+                        'atas_nama' => $item['atas_nama'],
+                        'kategori_barang' => $item['kategori_barang'],
+                        'nama_barang' => $item['nama_barang'],
+                        'jumlah_barang' => $item['jumlah_barang'],
+                        'harga_satuan' => $item['harga_satuan'],
+                        'nominal' => $item['nominal'],
+                        'keterangan' => $item['keterangan'],
+                    ];
+                } else {
+                    $item_update = [
+                        'id_jenis_donasi' => $item['id_jenis_donasi'],
+                        'id_program_donasi' => $item['id_program_donasi'],
+                        'id_project_donasi' => $item['id_project_donasi'],
+                        'tipe_donasi' => $item['tipe_donasi'],
+                        'atas_nama' => $item['atas_nama'],
+                        'kategori_barang' => $item['kategori_barang'],
+                        'nama_barang' => $item['nama_barang'],
+                        'jumlah_barang' => $item['jumlah_barang'],
+                        'harga_satuan' => $item['harga_satuan'],
+                        'nominal' => $item['nominal'],
+                        'keterangan' => $item['keterangan'],
+                    ];
+                    $this->M_donasi->updateItemDonasi($item['id'], $item_update);
+                }
+            }
+
+            if (count($item_insert) > 0) {
+                $this->M_donasi->insertBatchItemDonasi($item_insert);
+            }
+
+            if ($total_donasi != $total_donasi_update) {
+                throw new Exception("Nominal donasi tidak match !");
+            }
+
+			$this->db->trans_commit();
+            $response = ['status' => true, 'message' => "Item berhasil di ubah"];
+
+            echo json_encode($response);
+        } catch (Exception $e) {
+			$this->db->trans_rollback();
+            echo json_encode(['status' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
+    function update_departemen() {
+        $departemen = $this->input->post('departemen', TRUE);
+        $id_donasi = $this->input->post('id_donasi', TRUE);
+        $email_user = $this->session->email_user;
+
+        $donasi = $this->M_donasi->getDonasiById($id_donasi);
+        try {
+            if (empty($donasi)) {
+                throw new Exception("Terjadi Kesalahan");
+            }
+
+            $data_donasi = ['departemen' => $departemen];
+            $this->M_donasi->updateData($id_donasi, $data_donasi);
+
+            $log_donasi = [
+                'id_donasi' => $id_donasi,
+                'datetime_action' => date("Y-m-d H:i:s"),
+                'email_user' => $email_user,
+                'keterangan' => "Memperbarui departemen dari donasi dengan ID $id_donasi",
+            ];
+            $insert_log_notifikasi = $this->M_donasi->insertLog($log_donasi, 'tb_donasi_log');
+
+            $response = ['status' => true, 'message' => "Sukses memperbarui departemen"];
+        } catch (Exception $e) {
+            $response = ['status' => false, 'message' => $e->getMessage()];
+        }
+        echo json_encode($response);
+    }
+
 }

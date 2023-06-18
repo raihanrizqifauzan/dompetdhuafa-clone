@@ -101,6 +101,13 @@ class M_donatur extends CI_Model
 		$this->db->set($data);
         return $this->db->update("tb_donatur");
     }
+
+	public function getDonaturByEmail($email_donatur) {
+		$this->db->select("*");
+		$this->db->from("tb_donatur");
+		$this->db->where("email_donatur", $email_donatur);
+		return $this->db->get()->row();
+	}
 }
 
 ?>
