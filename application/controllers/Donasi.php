@@ -364,6 +364,12 @@ class Donasi extends CI_Controller {
         $id_donasi = $this->input->get('id');
         $id_donasi = base64_decode($id_donasi);
         $data['donasi'] = $this->M_donasi->getDonasiById($id_donasi);
+        if (empty($data['donasi'])) {
+            redirect(base_url('donasi/counter/list'));
+        }
+
+        $data['log_donasi'] = $this->M_donasi->getDonasiLog($id_donasi);
+        $data['log_notifikasi'] = $this->M_donasi->getLogNotifikasi($id_donasi);
         $data['list_item_donasi'] = json_encode($this->M_donasi->getDonasiItem($id_donasi));
 		$this->load->view("structure/V_head", $data);
 		$this->load->view("structure/V_navbar");
@@ -375,15 +381,34 @@ class Donasi extends CI_Controller {
 
     public function get_counter_list()
 	{
-		$list = $this->M_donasi->get_datatables_counter();
+        $status = $this->input->post('status');
+		$list = $this->M_donasi->get_datatables_counter($status);
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $item) {
             $row = [];
+            if ($item->status_donasi == "request_void") {
+                $color_badge = "bg-warning";
+            } else if ($item->status_donasi == "settle") {
+                $color_badge = "bg-success";
+            } else {
+                $color_badge = "bg-primary";
+            }
+
+            $btn_delete = "";
+            if ($item->status_donasi != "settle" && $item->status_donasi != "request_void") {
+                $btn_delete = '
+                <div class="mx-1">
+                    <a class="btn btn-danger void_donasi" data-id="'.$item->id.'">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </div>';
+            }
+
             $row[] = '<div class="text-center">'.$item->id.'</div>';
             $row[] = $item->tgl_donasi;
             $row[] = strtoupper($item->nama_lengkap);
-            $row[] = '<div class="text-center"><span class="badge bg-primary">'.strtoupper($item->status_donasi).'</span></div>';
+            $row[] = '<div class="text-center"><span class="badge '.$color_badge.'">'.strtoupper($item->status_donasi).'</span></div>';
             $row[] = '<div class="text-center">COUNTER</div>';
             $row[] = "<span>BRANCH TEST 001</span>";
             $row[] = "<span></span>";
@@ -395,11 +420,7 @@ class Donasi extends CI_Controller {
                         <i class="fa fa-eye"></i>
                     </a>
                 </div>
-                <div class="mx-1">
-                    <a class="btn btn-danger" href="javascript:void(0)" data-id="'.$item->id.'">
-                        <i class="fa fa-trash"></i>
-                    </a>
-                </div>
+                '.$btn_delete.'
 			</div>';
 
             $data[] = $row;
@@ -564,4 +585,127 @@ class Donasi extends CI_Controller {
         echo json_encode($response);
     }
 
+    function counter_collect() {
+        $data['list_collector'] = $this->M_donasi->getListCollector();
+		$this->load->view("structure/V_head", $data);
+		$this->load->view("structure/V_navbar");
+		$this->load->view("V_counter_collect.php");
+		$this->load->view("structure/V_footer");
+		$this->load->view("structure/V_foot");
+    }
+
+    function request_void() {
+        $id_donasi = $this->input->post('id_donasi', TRUE);
+        $keterangan = $this->input->post('keterangan', TRUE);
+        $email_user = $this->session->email_user;
+
+        $donasi = $this->M_donasi->getDonasiById($id_donasi);
+        try {
+            if (empty($donasi)) {
+                throw new Exception("Terjadi Kesalahan");
+            }
+
+            if (empty($keterangan)) {
+                throw new Exception("Keterangan wajib diisi");
+            }
+
+            $data_donasi = ['keterangan_void' => $keterangan, 'status_donasi' => 'request_void'];
+            $this->M_donasi->updateData($id_donasi, $data_donasi);
+
+            $log_donasi = [
+                'id_donasi' => $id_donasi,
+                'datetime_action' => date("Y-m-d H:i:s"),
+                'email_user' => $email_user,
+                'keterangan' => "Meminta pembatalan doansi",
+            ];
+            $insert_log_notifikasi = $this->M_donasi->insertLog($log_donasi, 'tb_donasi_log');
+
+            $response = ['status' => true, 'message' => "Sukses melakukan permintaan pembatalan donasi"];
+        } catch (Exception $e) {
+            $response = ['status' => false, 'message' => $e->getMessage()];
+        }
+        echo json_encode($response);
+    }
+
+
+    public function get_counter_collect()
+	{
+        $status = $this->input->post('status');
+		$list = $this->M_donasi->get_datatables_counter($status);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $key => $item) {
+            $row = [];
+
+            $no = $key+1;
+            $row[] = '<div class="text-center">'.$no.'</div>';
+            $row[] = $item->id;
+            $row[] = strtoupper($item->nama_lengkap);
+            $row[] = '<div class="text-end">'.$item->jumlah_item_donasi.'</div>';
+            $row[] = '<div class="text-center">'.$item->jenis_pembayaran.'</div>';
+            $row[] = '<div class="text-end">Rp'.number_format($item->total_donasi).'</div>';
+            $row[] = '<div class="text-center">'.date("d-m-Y", strtotime($item->tgl_donasi)).'</div>';
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->M_donasi->get_total_counter($status),
+            "recordsFiltered" => $this->M_donasi->get_total_counter_filtered($status),
+            "data" => $data,
+        );
+
+        echo json_encode($output);
+	}
+
+    function get_collector_by_id() {
+        $id_collector = $this->input->get('id_collector');
+
+        $collector = $this->M_donasi->getCollectorById($id_collector);
+        if (empty($collector)) {
+            $response = ['status' => false, 'message' => "Collector tidak ditemukan"];
+        } else {
+            $response = ['status' => true, 'message' => "Success", 'data' => $collector];
+        }
+        echo json_encode($response);
+    }
+
+    function request_collect() {
+        // $id_donasi = $this->input->post('id_donasi', TRUE);
+        // $keterangan = $this->input->post('keterangan', TRUE);
+        $email_user = $this->session->email_user;
+
+        $list_donasi = $this->M_donasi->getDonasiByStatus("draft");
+        try {
+            if (empty($list_donasi)) {
+                throw new Exception("Tidak ada data");
+            }
+
+            foreach ($list_donasi as $key => $donasi) {
+                $id_donasi = $donasi->id;
+                $data_donasi = ['status_donasi' => 'collect'];
+                $this->M_donasi->updateData($id_donasi, $data_donasi);
+
+                $log_donasi = [
+                    'id_donasi' => $id_donasi,
+                    'datetime_action' => date("Y-m-d H:i:s"),
+                    'email_user' => $email_user,
+                    'keterangan' => "Mengubah status donasi menjadi Collect",
+                ];
+                $insert_log_notifikasi = $this->M_donasi->insertLog($log_donasi, 'tb_donasi_log');
+            }
+            $response = ['status' => true, 'message' => "Sukses mengubah status donasi"];
+        } catch (Exception $e) {
+            $response = ['status' => false, 'message' => $e->getMessage()];
+        }
+        echo json_encode($response);
+    }
+
+    function counter_rekapan() {
+		$this->load->view("structure/V_head");
+		$this->load->view("structure/V_navbar");
+		$this->load->view("V_counter_rekapan.php");
+		$this->load->view("structure/V_footer");
+		$this->load->view("structure/V_foot");
+    }
 }

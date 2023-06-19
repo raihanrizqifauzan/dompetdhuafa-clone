@@ -6,6 +6,138 @@
     .table th, .table td {
         border:none!important;
     }
+
+    .card {
+        border:none!important;
+    }
+
+    .stepper {
+        .line {
+            width: 2px;
+            background-color: lightgrey !important;
+        }
+        .lead {
+            font-size: 1.1rem;
+        }
+    }
+
+    .md-stepper-horizontal {
+        display:table;
+        width:100%;
+        margin:0 auto;
+        background-color:#FFFFFF;
+        box-shadow: 0 3px 8px -6px rgba(0,0,0,.50);
+    }
+    .md-stepper-horizontal .md-step {
+        display:table-cell;
+        position:relative;
+        padding:24px;
+    }
+    .md-stepper-horizontal .md-step:hover,
+    .md-stepper-horizontal .md-step:active {
+        background-color:rgba(0,0,0,0.04);
+    }
+    .md-stepper-horizontal .md-step:active {
+        border-radius: 15% / 75%;
+    }
+    .md-stepper-horizontal .md-step:first-child:active {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    .md-stepper-horizontal .md-step:last-child:active {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+    .md-stepper-horizontal .md-step:hover .md-step-circle {
+        background-color:#757575;
+    }
+    .md-stepper-horizontal .md-step:first-child .md-step-bar-left,
+    .md-stepper-horizontal .md-step:last-child .md-step-bar-right {
+        display:none;
+    }
+    .md-stepper-horizontal .md-step .md-step-circle {
+        width:30px;
+        height:30px;
+        margin:0 auto;
+        background-color:#999999;
+        border-radius: 50%;
+        text-align: center;
+        line-height:30px;
+        font-size: 16px;
+        font-weight: 600;
+        color:#FFFFFF;
+    }
+    .md-stepper-horizontal.green .md-step.active .md-step-circle {
+        background-color:#00AE4D;
+    }
+    .md-stepper-horizontal.orange .md-step.active .md-step-circle {
+        background-color:#F96302;
+    }
+    .md-stepper-horizontal .md-step.active .md-step-circle {
+        background-color: rgb(33,150,243);
+    }
+    .md-stepper-horizontal .md-step.done .md-step-circle:before {
+        font-family:'FontAwesome';
+        font-weight:100;
+        content: "\f00c";
+    }
+    .md-stepper-horizontal .md-step.done .md-step-circle *,
+    .md-stepper-horizontal .md-step.editable .md-step-circle * {
+        display:none;
+    }
+    .md-stepper-horizontal .md-step.editable .md-step-circle {
+        -moz-transform: scaleX(-1);
+        -o-transform: scaleX(-1);
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
+    }
+    .md-stepper-horizontal .md-step.editable .md-step-circle:before {
+        font-family:'FontAwesome';
+        font-weight:100;
+        content: "\f040";
+    }
+    .md-stepper-horizontal .md-step .md-step-title {
+        margin-top:16px;
+        font-size:16px;
+        font-weight:600;
+    }
+    .md-stepper-horizontal .md-step .md-step-title,
+    .md-stepper-horizontal .md-step .md-step-optional {
+        text-align: center;
+        color:rgba(0,0,0,.26);
+    }
+    .md-stepper-horizontal .md-step.active .md-step-title {
+        font-weight: 600;
+        color:rgba(0,0,0,.87);
+    }
+    .md-stepper-horizontal .md-step.active.done .md-step-title,
+    .md-stepper-horizontal .md-step.active.editable .md-step-title {
+        font-weight:600;
+    }
+    .md-stepper-horizontal .md-step .md-step-optional {
+        font-size:12px;
+    }
+    .md-stepper-horizontal .md-step.active .md-step-optional {
+        color:rgba(0,0,0,.54);
+    }
+    .md-stepper-horizontal .md-step .md-step-bar-left,
+    .md-stepper-horizontal .md-step .md-step-bar-right {
+        position:absolute;
+        top:36px;
+        height:1px;
+        border-top:1px solid #DDDDDD;
+    }
+    .md-stepper-horizontal .md-step .md-step-bar-right {
+        right:0;
+        left:50%;
+        margin-left:20px;
+    }
+    .md-stepper-horizontal .md-step .md-step-bar-left {
+        left:0;
+        right:50%;
+        margin-right:20px;
+    }
+
 </style>
 <div class="container-fluid py-4 " style="margin-bottom:100px;">
     <nav aria-label="breadcrumb">
@@ -16,6 +148,36 @@
             <li class="breadcrumb-item text-sm text-white active" aria-current="page">Input</li>
         </ol>
     </nav>
+
+    <div class="row mt-4">
+        <div class="col-lg-12 mb-lg-0 mb-4">
+            <div class="md-stepper-horizontal green">
+                <?php 
+                $status_draft = ['draft', 'collect', 'settle'];
+                $status_collect = ['collect', 'settle'];
+                ?>
+                <div class="md-step <?= (in_array($donasi->status_donasi, $status_draft)) ? "done" : "" ?> active">
+                    <div class="md-step-circle"><span>1</span></div>
+                    <div class="md-step-title">DRAFT</div>
+                    <div class="md-step-bar-left"></div>
+                    <div class="md-step-bar-right"></div>
+                </div>
+                <div class="md-step  <?= (in_array($donasi->status_donasi, $status_collect)) ? "done" : "" ?> active">
+                    <div class="md-step-circle"><span>2</span></div>
+                    <div class="md-step-title">COLLECT</div>
+                    <div class="md-step-bar-left"></div>
+                    <div class="md-step-bar-right"></div>
+                </div>
+                
+                <div class="md-step <?= $donasi->status_donasi == 'settle' ? 'active' : '' ?>">
+                    <div class="md-step-circle"><span>3</span></div>
+                    <div class="md-step-title">SETTLE</div>
+                    <div class="md-step-bar-left"></div>
+                    <div class="md-step-bar-right"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <div class="row mt-4">
         <div class="col-lg-12 mb-lg-0 mb-4">
@@ -37,11 +199,25 @@
                             <button class="btn btn-secondary mx-1">Print Wakaf</button>
                             <button class="btn btn-default mx-1">Kirim Notifikasi</button>
                             <button class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#modalDonatur">Ganti Donatur</button>
-                            <button class="btn btn-danger mx-1">Void</button>
+                            <?php 
+                                if ($donasi->status_donasi == "draft") { 
+                                    echo '<button class="btn btn-danger mx-1" data-bs-toggle="modal" data-bs-target="#modalReqVoid">Void</button>';
+                                }
+                            ?>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between align-items-center">
-                            <div><b>Edit Donasi </b><span>#<?= $donasi->id ?></span> <span class="badge bg-default"><?= $donasi->status_donasi ?></span></div>
+                            <div>
+                                <b>Edit Donasi </b><span>#<?= $donasi->id ?></span> 
+                                <?php 
+                                if ($donasi->status_donasi == "request_void") { ?>
+                                    <span class="badge bg-warning"><?= $donasi->status_donasi ?></span></div>
+                                <?php } else {
+                                    ?>
+                                    <span class="badge bg-default"><?= $donasi->status_donasi ?></span></div>
+                                    <?php
+                                }
+                                ?>
                             <div>
                                 <small>Tanggal Donasi</small>
                                 <input type="date" value="<?= $donasi->tgl_donasi ?>" id="tgl_donasi" class="form-control" style="border:none;border-bottom:1px solid #ced4da">
@@ -141,30 +317,101 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mt-4 p-4 shadow justify-content-end mx-1">
-                            <div class="col-lg-6">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <div>Pembayaran Tunai :</div>
-                                    <div>Rp. 20.000,00</div>
-                                </div>
-                                <div class="d-flex justify-content-between mb-2">
-                                    <div>Pembayaran Bank :</div>
-                                    <div>Rp. 0,00</div>
-                                </div>
-                                <div class="d-flex justify-content-between mb-2">
-                                    <div>Pembayaran Mitra :</div>
-                                    <div>Rp. 0,00</div>
-                                </div>
-                                <div class="d-flex justify-content-between mb-2">
-                                    <div>Pembayaran Barang :</div>
-                                    <div>Rp. 0,00</div>
-                                </div>
-                                <div class="d-flex justify-content-between mb-2">
-                                    <div>Total Donasi :</div>
-                                    <div>Rp. 20.000,00</div>
-                                </div>
+                    </div>
+                    <div class="row mt-4 p-4 shadow justify-content-end mx-1">
+                        <div class="col-lg-6">
+                            <div class="d-flex justify-content-between mb-2">
+                                <div>Pembayaran Tunai :</div>
+                                <div>Rp. 20.000,00</div>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <div>Pembayaran Bank :</div>
+                                <div>Rp. 0,00</div>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <div>Pembayaran Mitra :</div>
+                                <div>Rp. 0,00</div>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <div>Pembayaran Barang :</div>
+                                <div>Rp. 0,00</div>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <div>Total Donasi :</div>
+                                <div>Rp. 20.000,00</div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-lg-12 mb-lg-0 mb-4">
+            <div class="card">
+                <div class=" pb-0 border-bottom">
+                    <div class="d-flex p-3 justify-content-between align-items-center">
+                        <div>
+                            <b class="">Status Notifikasi</b>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-100 p-4">
+                    <div class="stepper p-4 d-flex flex-column ml-2">
+                        <?php 
+                        foreach ($log_notifikasi as $key => $log) { ?>
+                            <div class="d-flex mb-1">
+                                <div class="d-flex flex-column pr-4 align-items-center">
+                                    <div class="rounded-circle p-2 bg-warning text-white mb-1">
+                                        <div style="width:10px;height:10px;border-radius:50%;background:#FFF">&nbsp;</div>
+                                    </div>
+                                    <div class="line h-100"></div>
+                                </div>
+                                <div class="mx-2">
+                                    <h5 class="text-dark"><?= date('d M Y H:i', strtotime($log->datetime_notifikasi)) ?></h5>
+                                    <p class="lead text-muted pb-3"><i><?= $log->keterangan ?></i></p>
+                                </div>
+                            </div>
+                            <?php 
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-lg-12 mb-lg-0 mb-4">
+            <div class="card">
+                <div class=" pb-0 border-bottom">
+                    <div class="d-flex p-3 justify-content-between align-items-center">
+                        <div>
+                            <b class="">Log Donasi</b>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-100 p-4">
+                    <div class="stepper p-4 d-flex flex-column ml-2">
+                        <?php 
+                        $no = 1;
+                        foreach ($log_donasi as $key => $log) { ?>
+                            <div class="d-flex mb-1">
+                                <div class="d-flex flex-column pr-4 align-items-center">
+                                    <div class="rounded-circle p-2 bg-warning text-white mb-1">
+                                        <div style="width:10px;height:10px;border-radius:50%;background:#FFF">&nbsp;</div>
+                                    </div>
+                                    <div class="line h-100"></div>
+                                </div>
+                                <div class="mx-2">
+                                    <h5 class="text-dark"><?= date('d M Y H:i', strtotime($log->datetime_action)) ?></h5>
+                                    <p class="lead text-muted pb-3"><i><?= $log->email_user ?> <?= $log->keterangan ?></i></p>
+                                </div>
+                            </div>
+                            <?php 
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -296,6 +543,30 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                 <button type="button" class="btn btn-primary" id="saveItem">Oke</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Req Void -->
+<div class="modal fade" id="modalReqVoid" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Request Void</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <div class="col-lg-12">
+                        <label for="">Keterangan</label>
+                        <input type="text" class="form-control" id="keterangan_void">
+                        <small>Harap masukkan <b>keterangan</b></small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btnSubmitVoid">Confirm</button>
             </div>
         </div>
     </div>
@@ -646,5 +917,22 @@
         }
         $("#keterangan").val(data.keterangan);
         $("#modalItem").modal("show");
+    })
+
+    $("#btnSubmitVoid").click(function () {
+        var keterangan = $("#keterangan_void").val();
+        $.ajax({
+            type: 'POST',
+            url: '<?= base_url('donasi/request_void') ?>',
+            data: {id_donasi: id_donasi, keterangan: keterangan},
+            success: function(response) {
+                var res = JSON.parse(response);
+                if (res.status) {
+                    window.location.href = "<?= base_url('donasi/detail?id=').$this->input->get('id') ?>";
+                } else {
+                    showErrorMessage(res.message);
+                }
+            }
+        });
     })
 </script>

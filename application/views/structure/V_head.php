@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="<?= base_url() ?>assets/iziToast/dist/css/iziToast.min.css">
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"crossorigin="anonymous"></script> -->
 
   <style>
     @media screen and (min-width: 992px) {
@@ -91,5 +92,9 @@
         border: 1px solid #197ED1;
     }
 
+
+    /* .container-fluid {
+        margin-top:20px!important;
+    } */
   </style>
 </head>

@@ -24,7 +24,7 @@
                 </div>
                 <div class="d-flex justify-content-center p-4">
                     <div class="table-responsive">
-                        <table class="table table-striped" id="example">
+                        <table class="table table-striped" id="tbDonasi">
                             <thead>
                                 <tr>
                                     <th>DONATION HID</th>
@@ -40,35 +40,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>2230610423</td>
-                                    <td>11-06-2023</td>
-                                    <td>ENDI</td>
-                                    <td><span class="label label-lg bg-light-info">DRAFT</span></td>
-                                    <td>COUNTER</td>
-                                    <td>BRANCH TEST 01</td>
-                                    <td></td>
-                                    <td>1</td>
-                                    <td>Rp500.000,00</td>
-                                    <td>
-                                        <div class="d-flex justify-content-center">
-                                            <div class="mx-1"><i class="fa fa-eye text-default"></i></div>
-                                            <div class="mx-1"><i class="fa fa-trash text-danger"></i></div>
-                                        </div>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
-                        <div class="d-flex mb-2">
-                            <div>
-                                <select class="px-3 py-1" id="" style="border:none;background:#eee!important">
-                                    <option value="10">10</option>
-                                    <option value="20">20</option>
-                                    <option value="50">50</option>
-                                </select>
-                                <small>Showing 1 rows to 1 of data</small>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -76,5 +49,71 @@
     </div>
 </div>
 
+<!-- Modal Req Void -->
+<div class="modal fade" id="modalReqVoid" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Request Void</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <div class="col-lg-12">
+                        <label for="">Keterangan</label>
+                        <input type="hidden" class="form-control" id="id_donasi">
+                        <input type="text" class="form-control" id="keterangan_void">
+                        <small>Harap masukkan <b>keterangan</b></small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btnSubmitVoid">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    var table = $('#tbDonasi').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "serverMethod" : "post",
+        ordering: false,
+        searching: false,
+        "ajax": {
+            "url" : "<?= base_url('donasi/get_counter_list') ?>",
+            "type": "POST",
+        },
+        "bDestroy":true,
+    });
+
+
+    $("#tbDonasi").on("click", ".void_donasi", function (e) {
+        var id = $(this).data("id");
+        console.log(id);
+        // $("#id_donasi").val(id);
+        // $("#modalReqVoid").modal("show")
+    })
+    // $("#modalReqVoid").on("shown.bs.modal", function (e) {
+    //     var button = e.relatedTarget;
+    //     $("#id_donasi").val(button.data("id"));
+    // })
+    
+    $("#btnSubmitVoid").click(function () {
+        var keterangan = $("#keterangan_void").val();
+        $.ajax({
+            type: 'POST',
+            url: '<?= base_url('donasi/request_void') ?>',
+            data: {id_donasi: $("#id_donasi").val(), keterangan: keterangan},
+            success: function(response) {
+                var res = JSON.parse(response);
+                if (res.status) {
+                    window.location.href = "<?= base_url('donasi/detail?id=').$this->input->get('id') ?>";
+                } else {
+                    showErrorMessage(res.message);
+                }
+            }
+        });
+    })
 </script>

@@ -55,3 +55,5 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['donasi/counter/new'] = 'donasi/new_counter';
 $route['donasi/counter/list'] = 'donasi/counter_list';
+$route['donasi/counter/collect'] = 'donasi/counter_collect';
+$route['donasi/counter/recap'] = 'donasi/counter_rekapan';
