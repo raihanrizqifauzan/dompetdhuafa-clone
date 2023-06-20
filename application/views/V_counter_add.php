@@ -472,6 +472,12 @@
         "bDestroy":true,
     });
 
+    $("#jumlah_barang, #harga_satuan").on("keyup, change", function () {
+        var qty = $("#jumlah_barang").val() == "" ? 0 : $("#jumlah_barang").val();
+        var price = $("#harga_satuan").val() == "" ? 0 : $("#harga_satuan").val();
+        $("#nominal").val(parseInt(qty) * parseInt(price));
+    })
+
     $(document).on("click", ".select-donatur", function (e) {
         var id_donatur = $(this).data("id");
         $.ajax({

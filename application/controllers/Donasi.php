@@ -119,7 +119,6 @@ class Donasi extends CI_Controller {
                 } else if (!is_numeric($harga_satuan) || $harga_satuan < 1) {
                     throw new Exception("Harga Satuan tidak valid");
                 }
-                $nominal = 0;
             } else {
                 if (empty($nominal)) {
                     throw new Exception("Nominal Harus diisi");
@@ -187,7 +186,6 @@ class Donasi extends CI_Controller {
                 } else if (!is_numeric($harga_satuan) || $harga_satuan < 1) {
                     throw new Exception("Harga Satuan tidak valid");
                 }
-                $nominal = 0;
             } else {
                 if (empty($nominal)) {
                     throw new Exception("Nominal Harus diisi");
@@ -289,11 +287,11 @@ class Donasi extends CI_Controller {
                     'keterangan' => $item->keterangan,
                 ];
 
-                if ($item->tipe_donasi == "uang") {
-                    $total_donasi += $item->nominal;
-                } else {
-                    $total_donasi += $item->jumlah_barang * $item->harga_satuan;
-                }
+                $total_donasi += $item->nominal;
+                // if ($item->tipe_donasi == "uang") {
+                // } else {
+                //     $total_donasi += $item->jumlah_barang * $item->harga_satuan;
+                // }
             }
 
             $data_donasi = [
@@ -707,5 +705,23 @@ class Donasi extends CI_Controller {
 		$this->load->view("V_counter_rekapan.php");
 		$this->load->view("structure/V_footer");
 		$this->load->view("structure/V_foot");
+    }
+
+    function get_recap() {
+        $donasi_recap = $this->M_donasi->getDonasiRecap();
+        echo json_encode($donasi_recap);
+    }
+
+    function recap() {
+		$this->load->view("structure/V_head");
+		$this->load->view("structure/V_navbar");
+		$this->load->view("V_donasi_recap.php");
+		$this->load->view("structure/V_footer");
+		$this->load->view("structure/V_foot");
+    }
+
+    function get_recap_tipe_donasi() {
+        $donasi_recap = $this->M_donasi->getDonasiRecapGroupByTipe();
+        echo json_encode($donasi_recap);
     }
 }

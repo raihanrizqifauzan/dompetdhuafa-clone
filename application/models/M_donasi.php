@@ -215,4 +215,34 @@ class M_donasi extends CI_Model
 		$this->db->where("status_donasi", $status);
 		return $this->db->get()->result();
     }
+
+    function getDonasiRecap($start_date = false, $end_date = false) {
+		$query = $this->db->query("SELECT fr.nama_user, donasi.tgl_donasi, donasi.id, 
+        (CASE
+            WHEN donasi.jenis_pembayaran = 'tunai' THEN total_donasi
+            ELSE 0
+        END) as donasi_tunai,
+        (CASE
+            WHEN donasi.jenis_pembayaran = 'mitra' THEN total_donasi
+            ELSE 0
+        END) as donasi_mitra,
+        (CASE
+            WHEN donasi.jenis_pembayaran = 'edc' THEN total_donasi
+            ELSE 0
+        END) as donasi_edc
+        FROM tb_donasi as donasi JOIN tb_user as fr ON donasi.email_input = fr.email_user
+        where donasi.status_donasi != 'request_void'
+        ORDER BY donasi.tgl_donasi DESC ");
+		return $query->result();
+    }
+
+    function getDonasiRecapGroupByTipe($start_date = false, $end_date = false) {
+		$this->db->select("j.jenis_donasi, COUNT(d.id) as total_trx, SUM(d.nominal) as total_donasi");
+        $this->db->from("tb_donasi_item d");
+        $this->db->join("tb_jenis_donasi j", "d.id_jenis_donasi = j.id");
+        $this->db->join("tb_donasi don", "don.id = d.id_donasi");
+        $this->db->where("don.status_donasi != ", 'request_void');
+        $this->db->group_by("d.id_jenis_donasi");
+		return $this->db->get()->result();
+    }
 }
