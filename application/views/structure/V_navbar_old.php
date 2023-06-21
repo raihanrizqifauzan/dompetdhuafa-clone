@@ -2,36 +2,6 @@
     .item-menu {
         cursor:pointer;
     }
-
-    .btn-menu-nav {
-        background-color: transparent !important;
-        border: 0px;
-        color: #fff;
-    }
-    
-    .custom-dropdown-menu {
-        padding: 1.2rem 0.75rem;
-    }
-
-    .custom-dropdown-menu:before {
-        content: unset !important;
-    }
-
-    .dropdown:not(.dropdown-hover) .custom-dropdown-menu {
-        margin-top: 3.5rem !important;
-        font-size: 14px !important;
-        line-height: 2rem !important;
-        border: #fff;
-    }
-
-    .custom-dropdown-menu .dropdown-item:hover{
-        background-color: #F3F6F9;
-        color: #6993FF;
-    }
-
-    .dropdown.item-menu:has(> .custom-dropdown-menu.show){
-        background-color: #1a84c6;
-    }
 </style>
 <body class="g-sidenav-show bg-gray-100">
     <div class="min-height-300 position-absolute w-100" id="background-body"></div>
@@ -89,18 +59,7 @@
         <div class="d-none d-lg-flex justify-content-between align-items-start p-4">
             <div class="d-flex">
                 <div class="mx-2 text-light py-2 px-3 border-radius-lg item-menu active"><b>Dashboard</b></div>
-                <div class="dropdown mx-2 text-light py-2 px-3 border-radius-lg item-menu">
-                    <button class="btn-menu-nav" type="button" id="donasiDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Donasi
-                    </button>
-                    <div class="dropdown-menu custom-dropdown-menu" aria-labelledby="donasiDropdown">
-                        <a class="dropdown-item" href="#">Daftar Donasi</a>
-                        <a class="dropdown-item" href="#">Konter</a>
-                        <a class="dropdown-item" href="#">Konfirmasi Donasi</a>
-                        <a class="dropdown-item" href="#">Rekapan</a>
-                        <a class="dropdown-item" href="#">Interaksi Donasi (Coming Soon)</a>
-                    </div>
-                </div>
+                <div class="mx-2 text-light py-2 px-3 border-radius-lg item-menu"><b>Donasi</b></div>
                 <div class="mx-2 text-light py-2 px-3 border-radius-lg item-menu"><b>Donatur</b></div>
                 <div class="mx-2 text-light py-2 px-3 border-radius-lg item-menu"><b>Kurban</b></div>
             </div>
