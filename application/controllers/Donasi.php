@@ -379,8 +379,8 @@ class Donasi extends CI_Controller {
 
     public function get_counter_list()
 	{
-        $status = $this->input->post('status');
-		$list = $this->M_donasi->get_datatables_counter($status);
+        $filter = $this->input->post();
+		$list = $this->M_donasi->get_datatables_counter($filter);
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $item) {
@@ -426,8 +426,8 @@ class Donasi extends CI_Controller {
 
         $output = array(
             "draw" => $_POST['draw'],
-            "recordsTotal" => $this->M_donasi->get_total_counter(),
-            "recordsFiltered" => $this->M_donasi->get_total_counter_filtered(),
+            "recordsTotal" => $this->M_donasi->get_total_counter($filter),
+            "recordsFiltered" => $this->M_donasi->get_total_counter_filtered($filter),
             "data" => $data,
         );
 

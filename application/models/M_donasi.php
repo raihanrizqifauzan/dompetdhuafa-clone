@@ -102,7 +102,7 @@ class M_donasi extends CI_Model
     }
 
     // Datatable Function //
-	public function _query_get_counter($status = "")
+	public function _query_get_counter($filter = [])
 	{
         $column_order = array(null);
         $column_search = array('id', 'nama_lengkap', 'tgl_donasi', 'status_donasi', 'total_donasi');
@@ -113,9 +113,30 @@ class M_donasi extends CI_Model
         $this->db->join('tb_donatur', 'tb_donatur.email_donatur = tb_donasi.email_donatur');
         $this->db->join('tb_donasi_item', 'tb_donasi.id = tb_donasi_item.id_donasi');
 		$i = 0;
-        if (!empty($status)) {
-            $this->db->where('tb_donasi.status_donasi', $status);
+
+        // Start Get By Filter 
+        if ($filter['id_donasi']) {
+            $this->db->where('tb_donasi.id', $filter['id_donasi']);
         }
+
+        if ($filter['tgl_awal'] && $filter['tgl_akhir']) {
+            $this->db->where('tb_donasi.tgl_donasi >=', $filter['tgl_awal']);
+            $this->db->where('tb_donasi.tgl_donasi <=', $filter['tgl_akhir']);
+        }
+
+        if ($filter['nama_donatur']) {
+            $this->db->where('tb_donatur.nama_lengkap', $filter['nama_donatur']);
+        }
+
+        if ($filter['status_donasi']) {
+            $this->db->where('tb_donasi.status_donasi', $filter['status_donasi']);
+        }
+
+        if ($filter['tipe']) {
+            $this->db->where('tb_donasi.tipe', $filter['tipe']);
+        }
+        // End Get By Filter
+
 		foreach ($column_search as $item) { // loop column 
 			if (@$_POST['search']['value']) { // if datatable send POST for search
 				if ($i === 0) { // first loop
@@ -132,28 +153,25 @@ class M_donasi extends CI_Model
         $this->db->group_by('tb_donasi.id');
 	}
 
-	public function get_datatables_counter($status = "")
+	public function get_datatables_counter($filter = [])
 	{
-		$this->_query_get_counter($status);
+		$this->_query_get_counter($filter);
 		if (@$_POST['length'] != -1)
 			$this->db->limit(@$_POST['length'], @$_POST['start']);
 		$query = $this->db->get();
 		return $query->result();
 	}
 
-	public function get_total_counter_filtered($status = "")
+	public function get_total_counter_filtered($filter = [])
 	{
-		$this->_query_get_counter($status);
+		$this->_query_get_counter($filter);
 		$query = $this->db->get();
 		return $query->num_rows();
 	}
 
-	public function get_total_counter($status = "")
+	public function get_total_counter($filter = [])
 	{
         $this->db->from('tb_donasi');
-        if (!empty($status)) {
-            $this->db->where('status_donasi', $status);
-        }
 		return $this->db->count_all_results();
 	}
 	// End Datatable Function //
