@@ -408,8 +408,8 @@ class Donasi extends CI_Controller {
             $row[] = strtoupper($item->nama_lengkap);
             $row[] = '<div class="text-center"><span class="badge '.$color_badge.'">'.strtoupper($item->status_donasi).'</span></div>';
             $row[] = '<div class="text-center">COUNTER</div>';
-            $row[] = "<span>BRANCH TEST 001</span>";
-            $row[] = "<span></span>";
+            $row[] = "<span>$item->nama_channel</span>";
+            $row[] = "<span>$item->no_rekonsiliasi</span>";
             $row[] = '<div class="text-end">'.$item->jumlah_item_donasi.'</div>';
             $row[] = '<div class="text-end">Rp'.number_format($item->total_donasi).'</div>';
             $row[] = '<div class="d-flex justify-content-center text-center mx-1">

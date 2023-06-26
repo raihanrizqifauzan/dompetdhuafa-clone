@@ -132,8 +132,21 @@ class M_donasi extends CI_Model
             $this->db->where('tb_donasi.status_donasi', $filter['status_donasi']);
         }
 
+        if ($filter['nomor_rekonsiliasi']) {
+            $this->db->where('tb_donasi.no_rekonsiliasi', $filter['nomor_rekonsiliasi']);
+        }
+
+        if ($filter['nama_channel']) {
+            $this->db->where('tb_donasi.nama_channel', $filter['nama_channel']);
+        }
+
         if ($filter['tipe']) {
             $this->db->where('tb_donasi.tipe', $filter['tipe']);
+        }
+
+        if ($filter['jumlah_donasi_terendah'] && $filter['jumlah_donasi_tertinggi']) {
+            $this->db->where('tb_donasi.total_donasi >=', $filter['jumlah_donasi_terendah']);
+            $this->db->where('tb_donasi.total_donasi <=', $filter['jumlah_donasi_tertinggi']);
         }
         // End Get By Filter
 
@@ -151,6 +164,10 @@ class M_donasi extends CI_Model
 			$i++;
 		}
         $this->db->group_by('tb_donasi.id');
+
+        if ($filter['jumlah_donasi']) {
+            $this->db->having('jumlah_item_donasi', $filter['jumlah_donasi']);
+        }
 	}
 
 	public function get_datatables_counter($filter = [])

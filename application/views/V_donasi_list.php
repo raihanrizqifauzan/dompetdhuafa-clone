@@ -4,7 +4,7 @@
         padding-right: 3px!important;
     }
 </style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.css" integrity="sha512-gp+RQIipEa1X7Sq1vYXnuOW96C4704yI1n0YB9T/KqdvqaEgL6nAuTSrKufUX3VBONq/TPuKiXGLVgBKicZ0KA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <div class="container-fluid py-4 mb-4">
     <nav aria-label="breadcrumb">
         <h6 class="font-weight-bolder text-white mb-0">Daftar Donasi</h6>
@@ -69,7 +69,12 @@
                                     <th><input type="text" id="nama_channel" class="form-control"></th>
                                     <th><input type="text" id="nomor_rekonsiliasi" class="form-control"></th>
                                     <th><input type="number" id="jumlah_donasi" class="form-control"></th>
-                                    <th><input type="number" id="jumlah" class="form-control"></th>
+                                    <th class="pt-0 mt-0 text-center">
+                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#filterJumlah" class="btn btn-sm btn-secondary mb-0" ><i class="fa fa-filter"></i></a>
+                                        <div class="mb-1 d-none" id="rangeJumlah">
+                                            <span class="badge bg-secondary">Rp100.000 - Rp200.000</span>
+                                        </div>  
+                                    </th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -107,11 +112,41 @@
         </div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/moment.min.js" integrity="sha512-i2CVnAiguN6SnJ3d2ChOOddMWQyvgQTzm0qSgiKhOqBMGCx4fGU5BtzXEybnKatWPDkXPFyCI0lbG42BnVjr/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.js" integrity="sha512-W76C8qrNYavcaycIH9EijxRuswoS+LCqA1+hq+ECrmjzAbe/SHhTgrwA1uc84husS/Gz50mxOEHPzrcd3sxBqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- Filter Jumlah -->
+<div class="modal fade" id="filterJumlah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Filter Jumlah Donasi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <div class="col-lg-12">
+                        <label for="">Jumlah Terendah</label>
+                        <input type="number" class="form-control" id="jumlah_terendah">
+                    </div>
+                    <div class="col-lg-12">
+                        <label for="">Jumlah Tertinggi</label>
+                        <input type="number" class="form-control" id="jumlah_tertinggi">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="reset_filter_jumlah">Reset</button>
+                <button type="button" class="btn btn-primary" id="submit_filter_jumlah">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     var tgl_awal = "";
     var tgl_akhir = "";
+    var jumlah_terendah = "";
+    var jumlah_tertinggi = "";
+
     var table = $('#tbDonasi').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -130,6 +165,9 @@
                 data.tipe = $("#tipe").val();
                 data.nama_channel = $("#nama_channel").val();
                 data.nomor_rekonsiliasi = $("#nomor_rekonsiliasi").val();
+                data.jumlah_donasi = $("#jumlah_donasi").val();
+                data.jumlah_donasi_terendah = jumlah_terendah;
+                data.jumlah_donasi_tertinggi = jumlah_tertinggi;
             }
         },
         "bDestroy":true,
@@ -198,11 +236,36 @@
 		};
 	}
 
-    $("#id_donasi_search, #nama_donatur, #nama_channel, #nomor_rekonsiliasi").keyup(delay( async function () {
+    $("#id_donasi_search, #nama_donatur, #nama_channel, #nomor_rekonsiliasi, #jumlah_donasi").keyup(delay( async function () {
         table.ajax.reload();
     }, 300));
 
     $("#status_donasi, #tipe").change(delay(async function () {
         table.ajax.reload();
     }, 300))
+
+    $("#submit_filter_jumlah").click(function () {
+        jumlah_terendah = $("#jumlah_terendah").val();
+        jumlah_tertinggi = $("#jumlah_tertinggi").val();
+        var range_angka = "";
+        if (jumlah_terendah != "" && jumlah_tertinggi != "") {
+            range_angka = `<span class="badge bg-secondary">Rp${formatRupiah(jumlah_terendah)}-Rp${formatRupiah(jumlah_tertinggi)}</span>`;
+        } else {
+            showErrorMessage("Isi range jumlah Donasi !");
+            return false;
+        }
+        table.ajax.reload();
+        $("#rangeJumlah").html(range_angka).removeClass("d-none");
+
+        $("#filterJumlah").modal("hide");
+    })
+
+    $("#reset_filter_jumlah").click(function () {
+        jumlah_terendah = "";
+        jumlah_tertinggi = "";
+        $("#jumlah_terendah").val("");
+        $("#jumlah_tertinggi").val("");
+        $("#rangeJumlah").html("").addClass("d-none");
+        table.ajax.reload();
+    })
 </script>
