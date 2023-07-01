@@ -197,6 +197,7 @@
                     </div>
                 </div>
                 <div class="mx-2 text-light py-2 px-3 border-radius-lg item-menu  <?= ($this->uri->segment(1) == 'donatur') ? 'active' : ''?>"><a class="text-light" href="<?= base_url('donatur/new') ?>" style="text-decoration:none"><b>Donatur</b></a></div>
+                <div class="mx-2 text-light py-2 px-3 border-radius-lg item-menu  <?= ($this->uri->segment(1) == 'checker') ? 'active' : ''?>"><a class="text-light" href="<?= base_url('checker') ?>" style="text-decoration:none"><b>Checker</b></a></div>
                 <!-- <div class="mx-2 text-light py-2 px-3 border-radius-lg item-menu"><b>Kurban</b></div> -->
             </div>
             <div>

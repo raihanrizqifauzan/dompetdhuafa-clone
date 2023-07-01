@@ -24,7 +24,7 @@
                             <b class="">Daftar Donasi</b>
                         </div>
                         <div>
-                            <button class="btn btn-sm mb-0 px-3" style="background-color: #FFA800;color:#FFF">Cari</button>
+                            <!-- <button class="btn btn-sm mb-0 px-3" style="background-color: #FFA800;color:#FFF">Cari</button> -->
                             <button class="btn btn-sm mb-0 px-3" style="background-color: #8950FC;color:#FFF">Export</button>
                         </div>
                     </div>
