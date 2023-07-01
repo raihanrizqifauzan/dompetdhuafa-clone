@@ -628,15 +628,15 @@ class Donasi extends CI_Controller {
 
     public function get_counter_collect()
 	{
-        $status = $this->input->post('status');
-		$list = $this->M_donasi->get_datatables_counter($status);
+        $filter = $this->input->post();
+		$list = $this->M_donasi->get_datatables_counter($filter);
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $key => $item) {
             $row = [];
 
             $no = $key+1;
-            $row[] = '<div class="text-center">'.$no.'</div>';
+            $row[] = '<div class="text-center"><input type="checkbox" class="check-donasi" data-id="'.$item->id.'"></div>';
             $row[] = $item->id;
             $row[] = strtoupper($item->nama_lengkap);
             $row[] = '<div class="text-end">'.$item->jumlah_item_donasi.'</div>';
@@ -648,8 +648,8 @@ class Donasi extends CI_Controller {
 
         $output = array(
             "draw" => $_POST['draw'],
-            "recordsTotal" => $this->M_donasi->get_total_counter($status),
-            "recordsFiltered" => $this->M_donasi->get_total_counter_filtered($status),
+            "recordsTotal" => $this->M_donasi->get_total_counter($filter),
+            "recordsFiltered" => $this->M_donasi->get_total_counter_filtered($filter),
             "data" => $data,
         );
 
@@ -669,17 +669,23 @@ class Donasi extends CI_Controller {
     }
 
     function request_collect() {
-        // $id_donasi = $this->input->post('id_donasi', TRUE);
-        // $keterangan = $this->input->post('keterangan', TRUE);
+        $list_donasi = $this->input->post('list_donasi', TRUE);
+        $id_collector = $this->input->post('id_collector', TRUE);
         $email_user = $this->session->email_user;
+        date_default_timezone_set("Asia/Jakarta");
 
-        $list_donasi = $this->M_donasi->getDonasiByStatus("draft");
         try {
+            $this->db->trans_start();
             if (empty($list_donasi)) {
-                throw new Exception("Tidak ada data");
+                throw new Exception("Pilih data yang akan di collect");
             }
 
-            foreach ($list_donasi as $key => $donasi) {
+            foreach ($list_donasi as $key => $id_donasi) {
+                $donasi = $this->M_donasi->getDonasiById($id_donasi);
+                if (empty($donasi) || $donasi->status_donasi != 'draft') {
+                    throw new Exception("Terjadi Kesalahan");
+                }
+
                 $id_donasi = $donasi->id;
                 $data_donasi = ['status_donasi' => 'collect'];
                 $this->M_donasi->updateData($id_donasi, $data_donasi);
@@ -688,12 +694,34 @@ class Donasi extends CI_Controller {
                     'id_donasi' => $id_donasi,
                     'datetime_action' => date("Y-m-d H:i:s"),
                     'email_user' => $email_user,
-                    'keterangan' => "Mengubah status donasi menjadi Collect",
+                    'keterangan' => "Melakukan Request Collect",
                 ];
                 $insert_log_notifikasi = $this->M_donasi->insertLog($log_donasi, 'tb_donasi_log');
             }
+
+
+            // Save Request Collect
+            $save_request_collect = [
+                'id_collector' => $id_collector,
+                'list_donasi' => json_encode($list_donasi),
+                'datetime_collect' => date("Y-m-d H:i:s")
+            ];
+            $id_inserted = $this->M_donasi->saveRequestCollect($save_request_collect);
+
+            $detail_request = [];
+            foreach ($list_donasi as $i => $id_donasi) {
+                $detail_request[] = [
+                    'id_request' => $id_inserted,
+                    'id_donasi' => $id_donasi
+                ];
+            }
+            $this->M_donasi->saveDetailRequest($detail_request);
+            // End Save Request Collect
+
+            $this->db->trans_commit();
             $response = ['status' => true, 'message' => "Sukses mengubah status donasi"];
         } catch (Exception $e) {
+            $this->db->trans_rollback();
             $response = ['status' => false, 'message' => $e->getMessage()];
         }
         echo json_encode($response);

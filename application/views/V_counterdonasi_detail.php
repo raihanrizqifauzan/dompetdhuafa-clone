@@ -169,7 +169,7 @@
                     <div class="md-step-bar-right"></div>
                 </div>
                 
-                <div class="md-step <?= $donasi->status_donasi == 'settle' ? 'active' : '' ?>">
+                <div class="md-step <?= $donasi->status_donasi == 'settle' ? 'done active' : '' ?>">
                     <div class="md-step-circle"><span>3</span></div>
                     <div class="md-step-title">SETTLE</div>
                     <div class="md-step-bar-left"></div>

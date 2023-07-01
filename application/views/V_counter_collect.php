@@ -60,7 +60,7 @@
                         <table class="table table-striped" id="tbDonasi">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th class="text-center"><input type="checkbox" class="check-all"></th>
                                     <th>DONATION HID</th>
                                     <th>NAMA DONATUR</th>
                                     <th>DONATION ITEM</th>
@@ -124,18 +124,31 @@
 </div>
 
 <script>
-    var id_collector = null;
+    var id_collector = null, checked_donasi = [];
     var table = $('#tbDonasi').DataTable( {
         "processing": true,
         "serverSide": true,
         "serverMethod" : "post",
         ordering: false,
-        searching: false,
+        searching: true,
+        bInfo: false,
+        paginate: false,
         "ajax": {
             "url" : "<?= base_url('donasi/get_counter_collect') ?>",
             "type": "POST",
-            "data": {
-                status: "draft"
+            "data": function(data) {
+                data.id_donasi = "";
+                data.tgl_awal = "";
+                data.tgl_akhir = "";
+                data.nama_donatur = "";
+                data.status_donasi = "";
+                data.tipe = "";
+                data.nama_channel = "";
+                data.nomor_rekonsiliasi = "";
+                data.jumlah_donasi = "";
+                data.jumlah_donasi_terendah = "";
+                data.jumlah_donasi_tertinggi = "";
+                data.status_donasi = "draft";
             }
         },
         "bDestroy":true,
@@ -171,7 +184,7 @@
         $.ajax({
             type: 'POST',
             url: '<?= base_url('donasi/request_collect') ?>',
-            data: {id_collector: id_collector},
+            data: {list_donasi: checked_donasi, id_collector: id_collector},
             success: function(response) {
                 var res = JSON.parse(response);
                 if (res.status) {
@@ -182,5 +195,37 @@
                 }
             }
         });
+    })
+
+    $(".check-all").change(function () {
+        if ($(this).is(":checked")) {
+            $(".check-donasi").each(function (i, obj) {
+                $(obj).prop("checked", true).trigger("change");
+            })
+        } else {
+            $(".check-donasi").each(function (i, obj) {
+                $(obj).prop("checked", false).trigger("change");
+            })
+        }
+    })
+
+    $(document).on("change", ".check-donasi", function () {
+        var id = $(this).data("id");
+        id = parseInt(id);
+
+        if ($(this).is(":checked")) {
+            if (!checked_donasi.includes(id)) {
+                checked_donasi.push(id)
+            }
+        } else {
+            var index = checked_donasi.indexOf(id);
+            if (index !== -1) {
+                checked_donasi.splice(index, 1);
+            }
+        }
+
+        if (checked_donasi.length == 0) {
+            $(".check-all").prop("checked", false);
+        }
     })
 </script>

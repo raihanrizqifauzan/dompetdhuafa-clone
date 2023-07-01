@@ -105,7 +105,7 @@ class M_donasi extends CI_Model
 	public function _query_get_counter($filter = [])
 	{
         $column_order = array(null);
-        $column_search = array('id', 'nama_lengkap', 'tgl_donasi', 'status_donasi', 'total_donasi');
+        $column_search = array('tb_donasi.id', 'tb_donatur.nama_lengkap', 'tgl_donasi', 'status_donasi', 'total_donasi');
         $order_by = array('id' => 'asc');
 
         $this->db->select('tb_donasi.*, tb_donatur.nama_lengkap, COUNT(tb_donasi_item.id) as jumlah_item_donasi');
@@ -279,5 +279,19 @@ class M_donasi extends CI_Model
         $this->db->where("don.status_donasi != ", 'request_void');
         $this->db->group_by("d.id_jenis_donasi");
 		return $this->db->get()->result();
+    }
+
+    function saveRequestCollect($data) {
+        $this->db->insert("tb_request_collect", $data);
+        $insert_id = $this->db->insert_id();
+        if ($this->db->affected_rows() > 0) {
+            return $insert_id;
+        } else {
+            return false;
+        }
+    }
+
+    function saveDetailRequest($data) {
+        return $this->db->insert_batch("tb_request_collect_detail", $data);
     }
 }

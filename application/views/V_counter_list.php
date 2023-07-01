@@ -30,7 +30,7 @@
                             <b class="">Daftar Donasi</b>
                         </div>
                         <div>
-                            <a href="<?= base_url('donasi/counter/list') ?>" class="btn text-light btn-warning mb-0 px-3">Cari</a>
+                            <!-- <a href="<?= base_url('donasi/counter/list') ?>" class="btn text-light btn-warning mb-0 px-3">Cari</a> -->
                             <a href="<?= base_url('donasi/counter/list') ?>" class="btn btn-primary mb-0 px-3">Export Donasi</a>
                         </div>
                     </div>
