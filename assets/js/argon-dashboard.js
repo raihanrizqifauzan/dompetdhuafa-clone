@@ -393,11 +393,11 @@ function toggleSidenav() {
     body.classList.add(className);
     sidenav.classList.add('bg-white');
     sidenav.classList.remove('bg-transparent');
-    iconSidenav.classList.remove('d-none');
+    // iconSidenav.classList.remove('d-none');
   }
 }
 
-let html = document.getElementsByTagName('html')[0];
+let html = document.getElementsByClassName('main-content')[0];
 
 html.addEventListener("click", function(e) {
   if (body.classList.contains('g-sidenav-pinned') && !e.target.classList.contains('sidenav-toggler-line')) {
