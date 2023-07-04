@@ -9,6 +9,10 @@ class Checker extends CI_Controller {
         }
 
         $this->load->model(['M_checker', 'M_donasi']);
+
+        if ($this->session->userdata('role') != "checker") {
+            redirect(base_url());
+        }
     }
 
 
@@ -99,7 +103,7 @@ class Checker extends CI_Controller {
                 if ($status_collect == "approved") {
                     $msg = "telah di approve";
                 } else {
-                    $msg = "telah di reject";
+                    $msg = "telah di reject dan kembali status nya menjadi draft";
                 }
 
                 $log_donasi = [
@@ -108,7 +112,12 @@ class Checker extends CI_Controller {
                     'email_user' => $email_user,
                     'keterangan' => "Donasi $msg",
                 ];
-                $insert_log_notifikasi = $this->M_donasi->insertLog($log_donasi, 'tb_donasi_log');
+                $insert_log = $this->M_donasi->insertLog($log_donasi, 'tb_donasi_log');
+
+                if ($status_collect == "rejected") {
+                    $data_donasi = ['status_donasi' => 'draft'];
+                    $this->M_donasi->updateData($id_donasi, $data_donasi);
+                }
             }
 
             $this->db->trans_commit();

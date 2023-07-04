@@ -25,7 +25,7 @@
                         </div>
                         <div>
                             <!-- <button class="btn btn-sm mb-0 px-3" style="background-color: #FFA800;color:#FFF">Cari</button> -->
-                            <button class="btn btn-sm mb-0 px-3" style="background-color: #8950FC;color:#FFF">Export</button>
+                            <!-- <button class="btn btn-sm mb-0 px-3" style="background-color: #8950FC;color:#FFF">Export</button> -->
                         </div>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                                         <select class="form-control" id="status_donasi">
                                             <option value="">All</option>
                                             <option value="draft">Draft</option>
-                                            <option value="collect">Collect</option>
+                                            <option value="pending">Pending</option>
                                             <option value="settle">Settle</option>
                                             <option value="request_void">Request Void</option>
                                         </select>

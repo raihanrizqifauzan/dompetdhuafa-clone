@@ -92,55 +92,183 @@
         padding: 10px 0;
         color: #B5B5C3;
     }
+
+    .navbar-vertical.navbar-expand-xs {
+        max-width: 70vw !important;
+    }
+
+    .navbar-vertical.bg-white .navbar-nav>.nav-item .nav-link.active {
+        background-color: #F3F6F9;
+        color: #6993FF;
+        border: unset;
+        border-radius: unset;
+    }
+    .navbar-vertical.navbar-expand-xs .navbar-nav .nav-link {
+        margin: unset;
+        padding: 1rem;
+    }
+
+    #donasi-collapse .navbar-nav .nav-item {
+        padding: 0 20px;
+    }
+
+    .g-sidenav-show:not(.rtl) .sidenav {
+        transform: translateX(-70vw);
+    }
+    .g-sidenav-show.g-sidenav-pinned .sidenav {
+        transform: translateX(0);
+    }
+
+    .menu-nav-side.nav-link{
+        background-color: #F3F6F9 !important;
+        color: #6993FF !important;
+        border: unset;
+        border-radius: unset;
+    }
+
+    .menu-nav-side.nav-link.collapsed{
+        background-color: unset !important;
+        color: #67748e !important;
+        border: unset;
+        border-radius: unset;
+    }
+
+    .collapse.show .nav-link{
+        background-color: #F3F6F9;
+        color: #6993FF;
+        border: unset;
+        border-radius: unset;
+    }
+
+    .collapse.show .nav-link.collapsed{
+        background-color: unset;
+        color: #67748e;
+        border: unset;
+        border-radius: unset;
+    }
+
+    .navbar-vertical.navbar-expand-xs .navbar-collapse {
+        height: 95vh;
+    }
 </style>
 
 <body class="g-sidenav-show bg-gray-100">
     <div class="min-height-300 position-absolute w-100" id="background-body"></div>
-    <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 d-lg-none d-xl-none d-block" id="sidenav-main">
+    <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 d-lg-none d-xl-none" id="sidenav-main">
         <hr class="horizontal dark mt-0">
         <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" href="./pages/dashboard.html">
+                    <a class="nav-link <?= ($this->uri->segment(1) == 'dashboard' || empty($this->uri->segment(1))) ? 'active' : '' ?>" href="<?= base_url('dashboard') ?>">
                         <span class="nav-link-text ms-1">Dashboard</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <div class="nav-link d-flex justify-content-between align-items-center">
-                        <div class="w-100">
-                            <a href="./pages/dashboard.html">
-                                <span class="nav-link-text ms-1">Donasi</span>
-                            </a>
+
+                <?php if ($this->session->role == "data entry") { ?>
+                    <li class="nav-item">
+                        <a class="menu-nav-side nav-link collapsed" data-bs-toggle="collapse" href="#donasi-collapse" role="button" aria-expanded="false" aria-controls="donasi-collapse">
+                            <span class="nav-link-text ms-1">Donasi</span>
+                        </a>
+                        <div class="collapse" id="donasi-collapse">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link collapsed" href="<?= base_url('donasi/list') ?>">
+                                        <span class="nav-link-text ms-1">Daftar Donasi</span>
+                                    </a>
+                                </li>
+                                
+                                <li class="nav-item">
+                                    <a class="nav-link collapsed" data-bs-toggle="collapse" href="#konter-collapse" role="button" aria-expanded="false" aria-controls="konter-collapse">
+                                        <span class="nav-link-text ms-1">Konter</span>
+                                    </a>
+                                    <div class="collapse list-sub-nav" id="konter-collapse" data-parent="#donasi-collapse">
+                                        <ul class="navbar-nav">
+                                            <li class="nav-item">
+                                                <a class="nav-link collapsed" href="<?= base_url('donasi/counter/new') ?>">
+                                                    <span class="nav-link-text ms-1">&bull;&nbsp;&nbsp;&nbsp; Input</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link collapsed" href="<?= base_url('donasi/counter/collect') ?>">
+                                                    <span class="nav-link-text ms-1">&bull;&nbsp;&nbsp;&nbsp; Collect</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link collapsed" href="<?= base_url('donasi/counter/recap') ?>">
+                                                    <span class="nav-link-text ms-1">&bull;&nbsp;&nbsp;&nbsp; Rekapan Konter</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link collapsed" data-bs-toggle="collapse" href="#confirm-collapse" role="button" aria-expanded="false" aria-controls="confirm-collapse">
+                                        <span class="nav-link-text ms-1">Konfirmasi Donasi</span>
+                                    </a>
+                                    <div class="collapse list-sub-nav" id="confirm-collapse" data-parent="#donasi-collapse">
+                                        <ul class="navbar-nav">
+                                            <li class="nav-item">
+                                                <a class="nav-link collapsed" href="<?= base_url('confirmation') ?>">
+                                                    <span class="nav-link-text ms-1">&bull;&nbsp;&nbsp;&nbsp; List</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link collapsed" href="<?= base_url('confirmation/new') ?>">
+                                                    <span class="nav-link-text ms-1">&bull;&nbsp;&nbsp;&nbsp; Input</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                
+                                <li class="nav-item">
+                                    <a class="nav-link collapsed" href="<?= base_url('request') ?>">
+                                        <span class="nav-link-text ms-1">Request Settle</span>
+                                    </a>
+                                </li>
+                                
+                                <li class="nav-item">
+                                    <a class="nav-link collapsed" data-bs-toggle="collapse" href="#rekap-collapse" role="button" aria-expanded="false" aria-controls="rekap-collapse">
+                                        <span class="nav-link-text ms-1">Rekapan</span>
+                                    </a>
+                                    <div class="collapse list-sub-nav" id="rekap-collapse" data-parent="#donasi-collapse">
+                                        <ul class="navbar-nav">
+                                            <li class="nav-item">
+                                                <a class="nav-link collapsed" href="<?= base_url('donasi/recap') ?>">
+                                                    <span class="nav-link-text ms-1">&bull;&nbsp;&nbsp;&nbsp; Rekap Donasi</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link collapsed" href="<?= base_url('dashboard') ?>">
+                                                    <span class="nav-link-text ms-1">&bull;&nbsp;&nbsp;&nbsp; Rekap Collector</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                
+                                <li class="nav-item">
+                                    <a class="nav-link collapsed" href="<?= base_url('dashboard') ?>">
+                                        <span class="nav-link-text ms-1">Interaksi Donasi (Coming Soon)</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="px-3">
-                            <i class="fa fa-chevron-right" style="font-size: 8px;"></i>
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <div class="nav-link d-flex justify-content-between align-items-center">
-                        <div class="w-100">
-                            <a href="./pages/dashboard.html">
-                                <span class="nav-link-text ms-1">Donatur</span>
-                            </a>
-                        </div>
-                        <div class="px-3">
-                            <i class="fa fa-chevron-right" style="font-size: 8px;"></i>
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <div class="nav-link d-flex justify-content-between align-items-center">
-                        <div class="w-100">
-                            <a href="./pages/dashboard.html">
-                                <span class="nav-link-text ms-1">Kurban</span>
-                            </a>
-                        </div>
-                        <div class="px-3">
-                            <i class="fa fa-chevron-right" style="font-size: 8px;"></i>
-                        </div>
-                    </div>
-                </li>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link <?= ($this->uri->segment(1) == 'donatur') ? 'active' : '' ?>" href="<?= base_url('donatur') ?>">
+                            <span class="nav-link-text ms-1">Donatur</span>
+                        </a>
+                    </li>
+                <?php } else { ?>
+                    <li class="nav-item">
+                        <a class="nav-link <?= ($this->uri->segment(1) == 'checker') ? 'active' : '' ?>" href="<?= base_url('checker') ?>">
+                            <span class="nav-link-text ms-1">Checker</span>
+                        </a>
+                    </li>
+                <?php } ?>
             </ul>
         </div>
     </aside>
@@ -150,55 +278,62 @@
         <div class="d-none d-lg-flex justify-content-between align-items-start p-4">
             <div class="d-flex">
                 <div class="mx-2 text-light py-2 px-3 border-radius-lg item-menu <?= ($this->uri->segment(1) == 'dashboard' || empty($this->uri->segment(1))) ? 'active' : '' ?>"><a class="text-light" href="<?= base_url('dashboard') ?>" style="text-decoration:none"><b>Dashboard</b></a></div>
-                <div class="dropdown mx-2 text-light py-2 px-3 border-radius-lg item-menu  <?= ($this->uri->segment(1) == 'donasi') ? 'active' : ''?>">
-                    <button class="btn-menu-nav" id="dropdownMenuDonasi" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Donasi
-                    </button>
-                    <div class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuDonasi">
-                        <li class="list-down-menu">
-                            <a class="dropdown-item" href="<?= base_url('donasi/list') ?>">Daftar Donasi</a>
-                        </li>
-                        <li class="list-down-menu">
-                            <a class="dropdown-item" href="#">
-                                Konter
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                            </a>
+            <?php 
+                if ($this->session->role == "data entry") { ?>
+                    <div class="dropdown mx-2 text-light py-2 px-3 border-radius-lg item-menu  <?= ($this->uri->segment(1) == 'donasi') ? 'active' : ''?>">
+                        <button class="btn-menu-nav" id="dropdownMenuDonasi" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Donasi
+                        </button>
+                        <div class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuDonasi">
+                            <li class="list-down-menu">
+                                <a class="dropdown-item" href="<?= base_url('donasi/list') ?>">Daftar Donasi</a>
+                            </li>
+                            <li class="list-down-menu">
+                                <a class="dropdown-item" href="#">
+                                    Konter
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                </a>
 
-                            <ul class="submenu dropdown-menu">
-                                <li><a class="dropdown-item" href="<?= base_url('donasi/counter/list') ?>">Daftar Konter</a></li>
-                                <li><a class="dropdown-item" href="<?= base_url('donasi/counter/new') ?>">Input</a></li>
-                                <li><a class="dropdown-item" href="<?= base_url('donasi/counter/collect') ?>">Collect</a></li>
-                                <li><a class="dropdown-item" href="<?= base_url('donasi/counter/recap') ?>">Rekapan Konter</a></li>
-                            </ul>
-                        </li>
-                        <li class="list-down-menu">
-                            <a class="dropdown-item" href="#">
-                                Konfirmasi Donasi
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                            </a>
-                            <ul class="submenu dropdown-menu">
-                                <li><a class="dropdown-item" href="#">List</a></li>
-                                <li><a class="dropdown-item" href="#">Input</a></li>
-                            </ul>
-                        </li>
-                        <li class="list-down-menu">
-                            <a class="dropdown-item" href="#">
-                                Rekapan
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                            </a>
-                            <ul class="submenu dropdown-menu">
-                                <li><a class="dropdown-item" href="<?= base_url('donasi/recap') ?>">Rekap Donasi</a></li>
-                                <li><a class="dropdown-item" href="<?= base_url('dashboard') ?>">Rekap Collector</a></li>
-                            </ul>
-                        </li>
-                        <li class="list-down-menu">
-                            <a class="dropdown-item" href="<?= base_url('dashboard') ?>">Interaksi Donasi (Coming Soon)</a>
-                        </li>
+                                <ul class="submenu dropdown-menu">
+                                    <!-- <li><a class="dropdown-item" href="<?= base_url('donasi/counter/list') ?>">Daftar Konter</a></li> -->
+                                    <li><a class="dropdown-item" href="<?= base_url('donasi/counter/new') ?>">Input</a></li>
+                                    <li><a class="dropdown-item" href="<?= base_url('donasi/counter/collect') ?>">Collect</a></li>
+                                    <li><a class="dropdown-item" href="<?= base_url('donasi/counter/recap') ?>">Rekapan Konter</a></li>
+                                </ul>
+                            </li>
+                            <li class="list-down-menu">
+                                <a class="dropdown-item" href="#">
+                                    Konfirmasi Donasi
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                </a>
+                                <ul class="submenu dropdown-menu">
+                                    <li><a class="dropdown-item" href="<?= base_url('confirmation') ?>">List</a></li>
+                                    <li><a class="dropdown-item" href="<?= base_url('confirmation/new') ?>">Input</a></li>
+                                </ul>
+                            </li>
+                            <li class="list-down-menu">
+                                <a class="dropdown-item" href="<?= base_url('request') ?>">Request Settle</a>
+                            </li>
+                            <li class="list-down-menu">
+                                <a class="dropdown-item" href="#">
+                                    Rekapan
+                                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                </a>
+                                <ul class="submenu dropdown-menu">
+                                    <li><a class="dropdown-item" href="<?= base_url('donasi/recap') ?>">Rekap Donasi</a></li>
+                                    <li><a class="dropdown-item" href="<?= base_url('dashboard') ?>">Rekap Collector</a></li>
+                                </ul>
+                            </li>
+                            <li class="list-down-menu">
+                                <a class="dropdown-item" href="<?= base_url('dashboard') ?>">Interaksi Donasi (Coming Soon)</a>
+                            </li>
+                        </div>
                     </div>
-                </div>
-                <div class="mx-2 text-light py-2 px-3 border-radius-lg item-menu  <?= ($this->uri->segment(1) == 'donatur') ? 'active' : ''?>"><a class="text-light" href="<?= base_url('donatur/new') ?>" style="text-decoration:none"><b>Donatur</b></a></div>
-                <div class="mx-2 text-light py-2 px-3 border-radius-lg item-menu  <?= ($this->uri->segment(1) == 'checker') ? 'active' : ''?>"><a class="text-light" href="<?= base_url('checker') ?>" style="text-decoration:none"><b>Checker</b></a></div>
-                <!-- <div class="mx-2 text-light py-2 px-3 border-radius-lg item-menu"><b>Kurban</b></div> -->
+                    <div class="mx-2 text-light py-2 px-3 border-radius-lg item-menu  <?= ($this->uri->segment(1) == 'donatur') ? 'active' : ''?>"><a class="text-light" href="<?= base_url('donatur') ?>" style="text-decoration:none"><b>Donatur</b></a></div>
+                <?php } else { ?>
+                    <div class="mx-2 text-light py-2 px-3 border-radius-lg item-menu  <?= ($this->uri->segment(1) == 'checker') ? 'active' : ''?>"><a class="text-light" href="<?= base_url('checker') ?>" style="text-decoration:none"><b>Checker</b></a></div>
+                    <!-- <div class="mx-2 text-light py-2 px-3 border-radius-lg item-menu"><b>Kurban</b></div> -->
+                <?php } ?>
             </div>
             <div>
                 <span class="text-light mx-1">Hi, <?= $this->session->userdata('nama_user') ?></span> <a href="<?= base_url('login/logout') ?>" class="btn btn-success mb-0">Sign Out</a>
@@ -211,9 +346,9 @@
                         <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
                             <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
                                 <div class="sidenav-toggler-inner">
-                                  <i class="sidenav-toggler-line bg-white"></i>
-                                  <i class="sidenav-toggler-line bg-white"></i>
-                                  <i class="sidenav-toggler-line bg-white"></i>
+                                    <i class="sidenav-toggler-line bg-white"></i>
+                                    <i class="sidenav-toggler-line bg-white"></i>
+                                    <i class="sidenav-toggler-line bg-white"></i>
                                 </div>
                             </a>
                         </li>

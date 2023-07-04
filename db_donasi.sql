@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 01, 2023 at 02:15 PM
+-- Generation Time: Jul 04, 2023 at 05:46 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.31
 
@@ -20,6 +20,26 @@ SET time_zone = "+00:00";
 --
 -- Database: `db_donasi`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_bank`
+--
+
+CREATE TABLE `tb_bank` (
+  `id_bank` int(11) NOT NULL,
+  `nama_bank` varchar(250) NOT NULL,
+  `kode_rekening` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tb_bank`
+--
+
+INSERT INTO `tb_bank` (`id_bank`, `nama_bank`, `kode_rekening`) VALUES
+(1, 'BCA', '[\"4966\",\"4967\"]'),
+(2, 'BRI', '[\"4123\",\"4911\"]');
 
 -- --------------------------------------------------------
 
@@ -56,9 +76,18 @@ CREATE TABLE `tb_donasi` (
   `departemen` varchar(250) NOT NULL,
   `jenis_pembayaran` varchar(250) NOT NULL,
   `tipe` enum('counter','bank','echannel') NOT NULL DEFAULT 'counter',
+  `id_bank_tujuan` int(11) DEFAULT NULL,
+  `bank_tujuan` varchar(250) DEFAULT NULL,
+  `kode_rekening` varchar(250) DEFAULT NULL,
+  `id_bank_pengirim` int(11) DEFAULT NULL,
+  `bank_pengirim` varchar(250) DEFAULT NULL,
+  `no_rek_pengirim` varchar(250) DEFAULT NULL,
+  `atas_nama_pengirim` varchar(250) DEFAULT NULL,
+  `bukti_tf` text DEFAULT NULL,
+  `keterangan_donasi` text DEFAULT NULL,
   `tgl_donasi` date NOT NULL,
   `total_donasi` double NOT NULL,
-  `status_donasi` enum('draft','collect','settle','request_void') NOT NULL DEFAULT 'draft',
+  `status_donasi` enum('draft','pending','settle','request_void') NOT NULL DEFAULT 'draft',
   `keterangan_void` text DEFAULT NULL,
   `no_rekonsiliasi` text DEFAULT NULL,
   `nama_channel` text NOT NULL DEFAULT 'BRANCH TEST 001'
@@ -68,13 +97,13 @@ CREATE TABLE `tb_donasi` (
 -- Dumping data for table `tb_donasi`
 --
 
-INSERT INTO `tb_donasi` (`id`, `email_input`, `datetime_create`, `email_donatur`, `departemen`, `jenis_pembayaran`, `tipe`, `tgl_donasi`, `total_donasi`, `status_donasi`, `keterangan_void`, `no_rekonsiliasi`, `nama_channel`) VALUES
-(4, 'endi@test.com', '2023-06-15 17:59:50', 'raihanrizqif@gmail.com', 'MPZ', 'edc', 'counter', '2023-06-15', 5500000, 'request_void', 'bagus', NULL, 'BRANCH TEST 001'),
-(7, 'endi@test.com', '2023-06-17 10:37:54', 'tikymejan@mailinator.com', 'Retail-Konter', 'tunai', 'counter', '2023-06-17', 20000000, 'settle', 'hapus ah', NULL, 'BRANCH TEST 001'),
-(8, 'endi@test.com', '2023-06-17 10:38:34', 'raihanrizqif@gmail.com', 'Retail-Konter', 'tunai', 'counter', '2023-06-17', 20000000, 'settle', NULL, NULL, 'BRANCH TEST 001'),
-(9, 'endi@test.com', '2023-06-20 15:08:28', 'tikymejan@mailinator.com', 'Retail-Konter', 'tunai', 'counter', '2023-06-20', 500000, 'request_void', 'tes', NULL, 'BRANCH TEST 001'),
-(10, 'endi@test.com', '2023-06-30 15:02:30', 'raihanrizqif@gmail.com', 'Retail-Konter', 'tunai', 'counter', '2023-06-30', 2000000, 'settle', NULL, NULL, 'BRANCH TEST 002'),
-(11, 'endi@test.com', '2023-07-01 10:32:59', 'raihanrizqif@gmail.com', 'Retail-Konter', 'tunai', 'counter', '2023-07-01', 10000000, 'settle', NULL, NULL, 'BRANCH TEST 001');
+INSERT INTO `tb_donasi` (`id`, `email_input`, `datetime_create`, `email_donatur`, `departemen`, `jenis_pembayaran`, `tipe`, `id_bank_tujuan`, `bank_tujuan`, `kode_rekening`, `id_bank_pengirim`, `bank_pengirim`, `no_rek_pengirim`, `atas_nama_pengirim`, `bukti_tf`, `keterangan_donasi`, `tgl_donasi`, `total_donasi`, `status_donasi`, `keterangan_void`, `no_rekonsiliasi`, `nama_channel`) VALUES
+(4, 'endi@test.com', '2023-06-15 17:59:50', 'raihanrizqif@gmail.com', 'MPZ', 'edc', 'counter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-06-15', 5500000, 'settle', 'bagus', NULL, 'BRANCH TEST 001'),
+(7, 'endi@test.com', '2023-06-17 10:37:54', 'tikymejan@mailinator.com', 'Retail-Konter', 'tunai', 'counter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-06-17', 20000000, 'settle', 'hapus ah', NULL, 'BRANCH TEST 001'),
+(8, 'endi@test.com', '2023-06-17 10:38:34', 'raihanrizqif@gmail.com', 'Retail-Konter', 'tunai', 'counter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-06-17', 20000000, 'settle', NULL, NULL, 'BRANCH TEST 001'),
+(9, 'endi@test.com', '2023-06-20 15:08:28', 'tikymejan@mailinator.com', 'Retail-Konter', 'tunai', 'counter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-06-20', 500000, 'request_void', 'tes', NULL, 'BRANCH TEST 001'),
+(10, 'endi@test.com', '2023-06-30 15:02:30', 'raihanrizqif@gmail.com', 'Retail-Konter', 'tunai', 'counter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-06-30', 2000000, 'settle', NULL, NULL, 'BRANCH TEST 002'),
+(11, 'endi@test.com', '2023-07-01 10:32:59', 'raihanrizqif@gmail.com', 'Retail-Konter', 'tunai', 'counter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-07-01', 10000000, 'draft', NULL, NULL, 'BRANCH TEST 001');
 
 -- --------------------------------------------------------
 
@@ -158,7 +187,19 @@ INSERT INTO `tb_donasi_log` (`id`, `id_donasi`, `datetime_action`, `email_user`,
 (29, 10, '2023-07-01 17:22:48', 'endi@test.com', 'Donasi telah di reject'),
 (30, 8, '2023-07-01 17:26:48', 'endi@test.com', 'Donasi telah di approve'),
 (31, 10, '2023-07-01 17:26:48', 'endi@test.com', 'Donasi telah di approve'),
-(32, 11, '2023-07-01 17:28:08', 'endi@test.com', 'Donasi telah di reject');
+(32, 11, '2023-07-01 17:28:08', 'endi@test.com', 'Donasi telah di reject'),
+(33, 12, '2023-07-04 14:54:30', 'endi@test.com', 'Membuat Donasi via Konter'),
+(34, 12, '2023-07-04 15:55:23', 'endi@test.com', 'Mengupdate Donasi 12'),
+(35, 12, '2023-07-04 15:55:51', 'endi@test.com', 'Mengupdate Donasi 12'),
+(36, 12, '2023-07-04 16:00:29', 'endi@test.com', 'Mengupdate Donasi 12'),
+(37, 12, '2023-07-04 16:06:03', 'endi@test.com', 'Mengupdate Donasi 12'),
+(38, 12, '2023-07-04 16:06:30', 'endi@test.com', 'Mengupdate Donasi 12'),
+(40, 4, '2023-07-04 22:28:23', 'endi@test.com', 'Melakukan Request Collect'),
+(41, 11, '2023-07-04 22:30:27', 'endi@test.com', 'Melakukan Request Collect'),
+(42, 4, '2023-07-04 22:33:03', 'checker@test.com', 'Donasi telah di approve'),
+(43, 11, '2023-07-04 22:35:09', 'checker@test.com', 'Donasi telah di reject dan kembali status nya menjadi draft'),
+(44, 11, '2023-07-04 22:36:00', 'checker@test.com', 'Donasi telah di reject dan kembali status nya menjadi draft'),
+(45, 11, '2023-07-04 22:36:45', 'checker@test.com', 'Donasi telah di reject dan kembali status nya menjadi draft');
 
 -- --------------------------------------------------------
 
@@ -7443,7 +7484,8 @@ INSERT INTO `tb_log_notifikasi` (`id`, `id_donasi`, `keterangan`, `datetime_noti
 (5, 8, 'Pengiriman Whatsapp ke Nomor 081802136200 Berhasil', '2023-06-17 10:38:34', 'raihanrizqif@gmail.com', '081802136200'),
 (6, 9, 'Pengiriman Whatsapp ke Nomor 081802136200 Berhasil', '2023-06-20 15:08:28', 'tikymejan@mailinator.com', '081802136200'),
 (7, 10, 'Pengiriman Whatsapp ke Nomor 081802136200 Berhasil', '2023-06-30 15:02:30', 'raihanrizqif@gmail.com', '081802136200'),
-(8, 11, 'Pengiriman Whatsapp ke Nomor 081802136200 Berhasil', '2023-07-01 10:32:59', 'raihanrizqif@gmail.com', '081802136200');
+(8, 11, 'Pengiriman Whatsapp ke Nomor 081802136200 Berhasil', '2023-07-01 10:32:59', 'raihanrizqif@gmail.com', '081802136200'),
+(9, 12, 'Pengiriman Whatsapp ke Nomor 081802136200 Berhasil', '2023-07-04 14:54:30', 'raihanrizqif@gmail.com', '081802136200');
 
 -- --------------------------------------------------------
 
@@ -7499,16 +7541,28 @@ CREATE TABLE `tb_request_collect` (
   `nama_counter` varchar(250) NOT NULL DEFAULT 'BRANCH TEST 001',
   `list_donasi` text NOT NULL,
   `status_collect` enum('request','approved','rejected') NOT NULL DEFAULT 'request',
-  `datetime_collect` datetime NOT NULL
+  `datetime_collect` datetime NOT NULL,
+  `id_bank_tujuan` int(11) DEFAULT NULL,
+  `bank_tujuan` varchar(250) DEFAULT NULL,
+  `kode_rekening` varchar(150) NOT NULL,
+  `id_bank_pengirim` int(11) DEFAULT NULL,
+  `bank_pengirim` varchar(250) DEFAULT NULL,
+  `no_rek_pengirim` varchar(100) DEFAULT NULL,
+  `atas_nama_pengirim` varchar(250) NOT NULL,
+  `departemen` varchar(250) NOT NULL,
+  `bukti_tf` text DEFAULT NULL,
+  `keterangan` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tb_request_collect`
 --
 
-INSERT INTO `tb_request_collect` (`id_request`, `id_collector`, `nama_counter`, `list_donasi`, `status_collect`, `datetime_collect`) VALUES
-(2, 1, 'BRANCH TEST 001', '[\"8\",\"10\"]', 'approved', '2023-07-01 14:52:42'),
-(3, 2, 'BRANCH TEST 001', '[\"11\"]', 'rejected', '2023-07-01 15:33:13');
+INSERT INTO `tb_request_collect` (`id_request`, `id_collector`, `nama_counter`, `list_donasi`, `status_collect`, `datetime_collect`, `id_bank_tujuan`, `bank_tujuan`, `kode_rekening`, `id_bank_pengirim`, `bank_pengirim`, `no_rek_pengirim`, `atas_nama_pengirim`, `departemen`, `bukti_tf`, `keterangan`) VALUES
+(2, 1, 'BRANCH TEST 001', '[\"8\",\"10\"]', 'approved', '2023-07-01 14:52:42', NULL, NULL, '', NULL, NULL, NULL, '', '', NULL, NULL),
+(3, 2, 'BRANCH TEST 001', '[\"11\"]', 'rejected', '2023-07-01 15:33:13', NULL, NULL, '', NULL, NULL, NULL, '', '', NULL, NULL),
+(4, 1, 'BRANCH TEST 001', '[4]', 'approved', '2023-07-04 22:28:23', 1, 'BCA', '4966', 2, 'BRI', '213123123', 'Atas n', 'Retail-Konter', '1688484503.jpg', 'Tes'),
+(5, 2, 'BRANCH TEST 001', '[11]', 'rejected', '2023-07-04 22:30:27', 2, 'BRI', '4911', 1, 'BCA', '15531123', 'Tuuua', 'Retail-Bank', '1688484627.jpg', 'Lunas');
 
 -- --------------------------------------------------------
 
@@ -7529,7 +7583,9 @@ CREATE TABLE `tb_request_collect_detail` (
 INSERT INTO `tb_request_collect_detail` (`id_detail`, `id_request`, `id_donasi`) VALUES
 (1, 2, 8),
 (2, 2, 10),
-(3, 3, 11);
+(3, 3, 11),
+(4, 4, 4),
+(5, 5, 11);
 
 -- --------------------------------------------------------
 
@@ -7562,19 +7618,27 @@ CREATE TABLE `tb_user` (
   `id` int(11) NOT NULL,
   `email_user` varchar(150) NOT NULL,
   `password_user` varchar(150) NOT NULL,
-  `nama_user` varchar(150) NOT NULL
+  `nama_user` varchar(150) NOT NULL,
+  `role` enum('data entry','checker') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tb_user`
 --
 
-INSERT INTO `tb_user` (`id`, `email_user`, `password_user`, `nama_user`) VALUES
-(1, 'endi@test.com', 'e10adc3949ba59abbe56e057f20f883e', 'Endi Test');
+INSERT INTO `tb_user` (`id`, `email_user`, `password_user`, `nama_user`, `role`) VALUES
+(1, 'endi@test.com', 'e10adc3949ba59abbe56e057f20f883e', 'Endi Test', 'data entry'),
+(2, 'checker@test.com', 'e10adc3949ba59abbe56e057f20f883e', 'Checker Test', 'checker');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `tb_bank`
+--
+ALTER TABLE `tb_bank`
+  ADD PRIMARY KEY (`id_bank`);
 
 --
 -- Indexes for table `tb_collector`
@@ -7666,6 +7730,12 @@ ALTER TABLE `tb_user`
 --
 
 --
+-- AUTO_INCREMENT for table `tb_bank`
+--
+ALTER TABLE `tb_bank`
+  MODIFY `id_bank` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `tb_collector`
 --
 ALTER TABLE `tb_collector`
@@ -7675,19 +7745,19 @@ ALTER TABLE `tb_collector`
 -- AUTO_INCREMENT for table `tb_donasi`
 --
 ALTER TABLE `tb_donasi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tb_donasi_item`
 --
 ALTER TABLE `tb_donasi_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `tb_donasi_log`
 --
 ALTER TABLE `tb_donasi_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `tb_donatur`
@@ -7711,7 +7781,7 @@ ALTER TABLE `tb_kecamatan`
 -- AUTO_INCREMENT for table `tb_log_notifikasi`
 --
 ALTER TABLE `tb_log_notifikasi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tb_program_donasi`
@@ -7729,25 +7799,25 @@ ALTER TABLE `tb_project`
 -- AUTO_INCREMENT for table `tb_request_collect`
 --
 ALTER TABLE `tb_request_collect`
-  MODIFY `id_request` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_request` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tb_request_collect_detail`
 --
 ALTER TABLE `tb_request_collect_detail`
-  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tb_temp_donasi`
 --
 ALTER TABLE `tb_temp_donasi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `tb_user`
 --
 ALTER TABLE `tb_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -82,8 +82,8 @@
           }
         }
       })
-      </script>
-      <script src="<?= base_url() ?>assets/js/argon-dashboard.min.js?v=2.0.4"></script>
+    </script>
+    <script src="<?= base_url() ?>assets/js/argon-dashboard.js?v=2.0.4"></script>
 
   
 </body>
