@@ -31,7 +31,8 @@ class Login extends CI_Controller {
 
         $session_set = [
             'email_user' => $email,
-            'nama_user' => $check->nama_user
+            'nama_user' => $check->nama_user,
+            'role' => $check->role,
         ];
         $this->session->set_userdata($session_set);
         $flashdata = ['notif_message' => "Berhasil Login", 'notif_icon' => "success"];

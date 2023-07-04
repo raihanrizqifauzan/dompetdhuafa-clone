@@ -34,10 +34,10 @@ class M_donatur extends CI_Model
     }
 
     // Datatable Function //
-	public function _query_get_donatur($status = "")
+	public function _query_get_donatur($filter = "")
 	{
         $column_order = array(null);
-        $column_search = array('id_donatur', 'nama_lengkap', 'datetime_create', 'kode_rekening', 'kota', 'provinsi');
+        $column_search = array('id_donatur', 'nama_lengkap', 'no_hp', 'email_donatur', 'kode_rekening', 'kategori_prospek');
         $order_by = array('id_donatur' => 'asc');
 
         $this->db->select('*');
@@ -57,6 +57,27 @@ class M_donatur extends CI_Model
 			$i++;
 		}
 
+		if (isset($filter['id_donatur']) && !empty($filter['id_donatur'])) {
+            $this->db->like('tb_donatur.id_donatur', $filter['id_donatur']);
+        }
+		if (isset($filter['nama_lengkap']) && !empty($filter['nama_lengkap'])) {
+            $this->db->like('tb_donatur.nama_lengkap', $filter['nama_lengkap']);
+        }
+		if (isset($filter['no_hp']) && !empty($filter['no_hp'])) {
+			$filter['no_hp'] = str_replace("+62", "0", $filter['no_hp']);
+			$filter['no_hp'] = str_replace("62", "0", $filter['no_hp']);
+            $this->db->like('tb_donatur.no_hp', $filter['no_hp']);
+        }
+		if (isset($filter['email_donatur']) && !empty($filter['email_donatur'])) {
+            $this->db->like('tb_donatur.email_donatur', $filter['email_donatur']);
+        }
+		if (isset($filter['tipe_donatur']) && !empty($filter['tipe_donatur'])) {
+            $this->db->where('tb_donatur.tipe_donatur', $filter['tipe_donatur']);
+        }
+		if (isset($filter['status_donatur']) && !empty($filter['status_donatur'])) {
+            $this->db->where('tb_donatur.status_donatur', $filter['status_donatur']);
+        }
+
 		// if (isset($_POST['order'])) { // here order processing
 		// 	$this->db->order_by($column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
 		// } else if (isset($order_by)) {
@@ -65,23 +86,23 @@ class M_donatur extends CI_Model
 		// }
 	}
 
-	public function get_datatables_donatur()
+	public function get_datatables_donatur($filter)
 	{
-		$this->_query_get_donatur();
+		$this->_query_get_donatur($filter);
 		if (@$_POST['length'] != -1)
 			$this->db->limit(@$_POST['length'], @$_POST['start']);
 		$query = $this->db->get();
 		return $query->result();
 	}
 
-	public function get_total_filtered_donatur()
+	public function get_total_filtered_donatur($filter)
 	{
-		$this->_query_get_donatur();
+		$this->_query_get_donatur($filter);
 		$query = $this->db->get();
 		return $query->num_rows();
 	}
 
-	public function get_total_donatur()
+	public function get_total_donatur($filter)
 	{
         $this->db->from('tb_donatur');
 		return $this->db->count_all_results();

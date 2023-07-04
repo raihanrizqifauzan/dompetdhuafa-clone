@@ -125,7 +125,7 @@ class M_donasi extends CI_Model
         }
 
         if ($filter['nama_donatur']) {
-            $this->db->where('tb_donatur.nama_lengkap', $filter['nama_donatur']);
+            $this->db->like('tb_donatur.nama_lengkap', $filter['nama_donatur']);
         }
 
         if ($filter['status_donasi']) {
@@ -137,7 +137,7 @@ class M_donasi extends CI_Model
         }
 
         if ($filter['nama_channel']) {
-            $this->db->where('tb_donasi.nama_channel', $filter['nama_channel']);
+            $this->db->like('tb_donasi.nama_channel', $filter['nama_channel']);
         }
 
         if ($filter['tipe']) {
@@ -293,5 +293,16 @@ class M_donasi extends CI_Model
 
     function saveDetailRequest($data) {
         return $this->db->insert_batch("tb_request_collect_detail", $data);
+    }
+    public function updateDataDonasi($id, $data) {
+        $this->db->set($data);
+        $this->db->where("id", $id);
+        return $this->db->update('tb_donasi');
+
+    }
+	public function deleteDetailItemDonasi($id)
+	{
+        $this->db->where("id", $id);
+        return $this->db->delete("tb_donasi_item");
     }
 }

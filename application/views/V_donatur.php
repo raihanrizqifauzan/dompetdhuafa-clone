@@ -2,6 +2,11 @@
     .pagination li{
         margin-left:12px !important;
     }
+
+    .filter-input th {
+        padding-left: 3px!important;
+        padding-right: 3px!important;
+    }
 </style>
 <div class="container-fluid py-4" style="margin-bottom:100px;">
     <nav aria-label="breadcrumb">
@@ -22,12 +27,12 @@
                             <b class="">Daftar Donatur</b>
                         </div>
                         <div>
-                            <button class="btn btn-sm mb-0 px-3" style="background-color: #FFA800;color:#FFF">Cari</button>
+                            <!-- <button class="btn btn-sm mb-0 px-3" style="background-color: #FFA800;color:#FFF">Cari</button> -->
                             <a href="<?= base_url('donatur/new') ?>" class="btn btn-sm mb-0 px-3" style="background-color: #8950FC;color:#FFF">Tambah Donatur</a>
                         </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-center w-100 py-4 px-2">
+                <div class="d-flex justify-content-center w-100 py-4 px-4">
                     <div class="table-responsive">
                         <table class="table" id="example">
                             <thead>
@@ -39,6 +44,28 @@
                                     <th>TIPE DONATUR</th>
                                     <th class="text-center">STATUS</th>
                                     <th class="text-center">ACTION</th>
+                                </tr>
+                                <tr class="filter-input">
+                                    <th class="text-center"><input type="number" class="form-control" id="filter-id"></th>
+                                    <th><input type="text" class="form-control" id="filter-nama"></th>
+                                    <th><input type="number" class="form-control" id="filter-hp"></th>
+                                    <th><input type="text" class="form-control" id="filter-email"></th>
+                                    <th>
+                                        <select class="form-control" id="filter-tipe">
+                                            <option value="">All</option>
+                                            <option value="individu">Individu</option>
+                                            <option value="lembaga">Lembaga</option>
+                                            <option value="komunitas">Komunitas</option>
+                                        </select>
+                                    </th>
+                                    <th class="text-center">
+                                        <select class="form-control" id="filter-status">
+                                            <option value="">All</option>
+                                            <option value="aktif">Active</option>
+                                            <option value="nonaktif">Inactive</option>
+                                        </select>
+                                    </th>
+                                    <th class="text-center"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -82,7 +109,35 @@
         "ajax": {
             "url" : "<?= base_url('donatur/get_list_donatur') ?>",
             "type": "POST",
+            data:function(data) {
+                data.id_donatur = $("#filter-id").val();
+                data.nama_lengkap = $("#filter-nama").val();
+                data.no_hp = $("#filter-hp").val();
+                data.email_donatur = $("#filter-email").val();
+                data.tipe_donatur = $("#filter-tipe").val();
+                data.status_donatur = $("#filter-status").val();
+            }
         },
         "bDestroy":true,
+        bInfo: false,
     });
+
+    function delay(callback, ms) {
+		var timer = 0;
+		return function() {
+			var context = this, args = arguments;
+			clearTimeout(timer);
+			timer = setTimeout(function () {
+				callback.apply(context, args);
+			}, ms || 0);
+		};
+	}
+
+    $("#filter-id, #filter-nama, #filter-email, #filter-hp").keyup(delay( async function () {
+        table.ajax.reload();
+    }, 300));
+
+    $("#filter-status, #filter-tipe").change(delay(async function () {
+        table.ajax.reload();
+    }, 300))
 </script>

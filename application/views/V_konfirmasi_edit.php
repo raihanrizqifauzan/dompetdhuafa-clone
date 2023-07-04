@@ -10,174 +10,16 @@
     .card {
         border:none!important;
     }
-
-    .stepper {
-        .line {
-            width: 2px;
-            background-color: lightgrey !important;
-        }
-        .lead {
-            font-size: 1.1rem;
-        }
-    }
-
-    .md-stepper-horizontal {
-        display:table;
-        width:100%;
-        margin:0 auto;
-        background-color:#FFFFFF;
-        box-shadow: 0 3px 8px -6px rgba(0,0,0,.50);
-    }
-    .md-stepper-horizontal .md-step {
-        display:table-cell;
-        position:relative;
-        padding:24px;
-    }
-    .md-stepper-horizontal .md-step:hover,
-    .md-stepper-horizontal .md-step:active {
-        background-color:rgba(0,0,0,0.04);
-    }
-    .md-stepper-horizontal .md-step:active {
-        border-radius: 15% / 75%;
-    }
-    .md-stepper-horizontal .md-step:first-child:active {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-    .md-stepper-horizontal .md-step:last-child:active {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-    .md-stepper-horizontal .md-step:hover .md-step-circle {
-        background-color:#757575;
-    }
-    .md-stepper-horizontal .md-step:first-child .md-step-bar-left,
-    .md-stepper-horizontal .md-step:last-child .md-step-bar-right {
-        display:none;
-    }
-    .md-stepper-horizontal .md-step .md-step-circle {
-        width:30px;
-        height:30px;
-        margin:0 auto;
-        background-color:#999999;
-        border-radius: 50%;
-        text-align: center;
-        line-height:30px;
-        font-size: 16px;
-        font-weight: 600;
-        color:#FFFFFF;
-    }
-    .md-stepper-horizontal.green .md-step.active .md-step-circle {
-        background-color:#00AE4D;
-    }
-    .md-stepper-horizontal.orange .md-step.active .md-step-circle {
-        background-color:#F96302;
-    }
-    .md-stepper-horizontal .md-step.active .md-step-circle {
-        background-color: rgb(33,150,243);
-    }
-    .md-stepper-horizontal .md-step.done .md-step-circle:before {
-        font-family:'FontAwesome';
-        font-weight:100;
-        content: "\f00c";
-    }
-    .md-stepper-horizontal .md-step.done .md-step-circle *,
-    .md-stepper-horizontal .md-step.editable .md-step-circle * {
-        display:none;
-    }
-    .md-stepper-horizontal .md-step.editable .md-step-circle {
-        -moz-transform: scaleX(-1);
-        -o-transform: scaleX(-1);
-        -webkit-transform: scaleX(-1);
-        transform: scaleX(-1);
-    }
-    .md-stepper-horizontal .md-step.editable .md-step-circle:before {
-        font-family:'FontAwesome';
-        font-weight:100;
-        content: "\f040";
-    }
-    .md-stepper-horizontal .md-step .md-step-title {
-        margin-top:16px;
-        font-size:16px;
-        font-weight:600;
-    }
-    .md-stepper-horizontal .md-step .md-step-title,
-    .md-stepper-horizontal .md-step .md-step-optional {
-        text-align: center;
-        color:rgba(0,0,0,.26);
-    }
-    .md-stepper-horizontal .md-step.active .md-step-title {
-        font-weight: 600;
-        color:rgba(0,0,0,.87);
-    }
-    .md-stepper-horizontal .md-step.active.done .md-step-title,
-    .md-stepper-horizontal .md-step.active.editable .md-step-title {
-        font-weight:600;
-    }
-    .md-stepper-horizontal .md-step .md-step-optional {
-        font-size:12px;
-    }
-    .md-stepper-horizontal .md-step.active .md-step-optional {
-        color:rgba(0,0,0,.54);
-    }
-    .md-stepper-horizontal .md-step .md-step-bar-left,
-    .md-stepper-horizontal .md-step .md-step-bar-right {
-        position:absolute;
-        top:36px;
-        height:1px;
-        border-top:1px solid #DDDDDD;
-    }
-    .md-stepper-horizontal .md-step .md-step-bar-right {
-        right:0;
-        left:50%;
-        margin-left:20px;
-    }
-    .md-stepper-horizontal .md-step .md-step-bar-left {
-        left:0;
-        right:50%;
-        margin-right:20px;
-    }
-
 </style>
 <div class="container-fluid py-4 " style="margin-bottom:100px;">
     <nav aria-label="breadcrumb">
-        <h6 class="font-weight-bolder text-white mb-0">Input</h6>
+        <h6 class="font-weight-bolder text-white mb-0">List</h6>
         <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;"><i class="fa fa-home"></i></a></li>
-            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Konter</a></li>
-            <li class="breadcrumb-item text-sm text-white active" aria-current="page">Input</li>
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Konfirmasi Donasi</a></li>
+            <li class="breadcrumb-item text-sm text-white active" aria-current="page">List</li>
         </ol>
     </nav>
-
-    <div class="row mt-4">
-        <div class="col-lg-12 mb-lg-0 mb-4">
-            <div class="md-stepper-horizontal green">
-                <?php 
-                $status_draft = ['draft', 'pending', 'settle'];
-                $status_collect = ['pending', 'settle'];
-                ?>
-                <div class="md-step <?= (in_array($donasi->status_donasi, $status_draft)) ? "done" : "" ?> active">
-                    <div class="md-step-circle"><span>1</span></div>
-                    <div class="md-step-title">DRAFT</div>
-                    <div class="md-step-bar-left"></div>
-                    <div class="md-step-bar-right"></div>
-                </div>
-                <div class="md-step  <?= (in_array($donasi->status_donasi, $status_collect)) ? "done" : "" ?> active">
-                    <div class="md-step-circle"><span>2</span></div>
-                    <div class="md-step-title">PENDING</div>
-                    <div class="md-step-bar-left"></div>
-                    <div class="md-step-bar-right"></div>
-                </div>
-                
-                <div class="md-step <?= $donasi->status_donasi == 'settle' ? 'done active' : '' ?>">
-                    <div class="md-step-circle"><span>3</span></div>
-                    <div class="md-step-title">SETTLE</div>
-                    <div class="md-step-bar-left"></div>
-                    <div class="md-step-bar-right"></div>
-                </div>
-            </div>
-        </div>
-    </div>
     
     <div class="row mt-4">
         <div class="col-lg-12 mb-lg-0 mb-4">
@@ -185,39 +27,21 @@
                 <div class=" pb-0 border-bottom">
                     <div class="d-flex p-3 justify-content-between align-items-center">
                         <div>
-                            <b class="">Form Donasi</b>
+                            <b class="">Konfirmasi</b>
                         </div>
                         <div>
-                            <a href="<?= base_url('donasi/counter/list') ?>" class="btn btn-sm mb-0 px-3" style="background-color: #F3F6F9;color:#7E8299"><i class="fa fa-arrow-left"></i> Back</a>
+                            <a href="<?= base_url('confirmation') ?>" class="btn btn-sm mb-0 px-3" style="background-color: #F3F6F9;color:#7E8299"><i class="fa fa-arrow-left"></i> Back</a>
                         </div>
                     </div>
                 </div>
                 <div class="w-100 p-4">
                     <div class="p-4 shadow">
                         <div class="d-flex justify-content-end">
-                            <!-- <button class="btn btn-warning mx-1">Print Kuitansi</button>
-                            <button class="btn btn-secondary mx-1">Print Wakaf</button>
-                            <button class="btn btn-default mx-1">Kirim Notifikasi</button> -->
-                            <button class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#modalDonatur">Ganti Donatur</button>
-                            <?php 
-                                if ($donasi->status_donasi == "draft") { 
-                                    echo '<button class="btn btn-danger mx-1" data-bs-toggle="modal" data-bs-target="#modalReqVoid">Void</button>';
-                                }
-                            ?>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDonatur">Pilih Donatur</button>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <b>Edit Donasi </b><span>#<?= $donasi->id ?></span> 
-                                <?php 
-                                if ($donasi->status_donasi == "request_void") { ?>
-                                    <span class="badge bg-warning"><?= $donasi->status_donasi ?></span></div>
-                                <?php } else {
-                                    ?>
-                                    <span class="badge bg-default"><?= $donasi->status_donasi ?></span></div>
-                                    <?php
-                                }
-                                ?>
+                            <div><b>Edit Konfirmasi</b></div>
                             <div>
                                 <small>Tanggal Donasi</small>
                                 <input type="date" value="<?= $donasi->tgl_donasi ?>" id="tgl_donasi" class="form-control" style="border:none;border-bottom:1px solid #ced4da">
@@ -247,15 +71,45 @@
                                     <th>:</th>
                                     <td width="80%" id="address"><?= $donasi->address ?></td>
                                 </tr>
-                                <tr>
-                                    <th>Tipe</th>
+                                <!-- <tr>
+                                    <th>Sumber</th>
                                     <th>:</th>
-                                    <td width="80%" id="tipe_donatur"><?= $donasi->tipe_donatur ?></td>
+                                    <td width="80%" id="sumber"></td>
+                                </tr> -->
+                                <tr>
+                                    <th>Nama Bank Tujuan</th>
+                                    <th>:</th>
+                                    <td width="80%" id="nama_bank_tujuan"><?= $donasi->bank_tujuan ?></td>
                                 </tr>
                                 <tr>
-                                    <th>Kode Rekening</th>
+                                    <th>Kode Rekening Tujuan</th>
                                     <th>:</th>
-                                    <td width="80%" id="kode_rekening"><?= $donasi->kode_rekening ?></td>
+                                    <td width="80%" id="kode_rekening_tujuan"><?= $donasi->kode_rekening ?></td>
+                                </tr>
+                                <tr>
+                                    <th>Nama Bank Pengirim</th>
+                                    <th>:</th>
+                                    <td width="80%" id="nama_bank_pengirim"><?= $donasi->bank_pengirim ?></td>
+                                </tr>
+                                <tr>
+                                    <th>No Rekening Pengirim</th>
+                                    <th>:</th>
+                                    <td width="80%" id="no_rek_pengirim"><?= $donasi->no_rek_pengirim ?></td>
+                                </tr>
+                                <tr>
+                                    <th>Atas Nama Rekening</th>
+                                    <th>:</th>
+                                    <td width="80%"><?= $donasi->atas_nama_pengirim ?></td>
+                                </tr>
+                                <tr>
+                                    <th>Jumlah</th>
+                                    <th>:</th>
+                                    <td width="80%" id="jumlah_donasi">Rp<?= number_format($donasi->total_donasi, 2, ',', '.') ?></td>
+                                </tr>
+                                <tr>
+                                    <th>Keterangan</th>
+                                    <th>:</th>
+                                    <td width="80%"><?= $donasi->keterangan_donasi ?></td>
                                 </tr>
                             </table>
                         </div>
@@ -269,10 +123,10 @@
                                 Donasi Item
                             </div>
                             <div>
-                                <button class="btn btn-info text-light" id="addItem">Tambah Item</button>
+                                <button class="btn btn-primary" id="addItem">Tambah Item</button>
                             </div>
                         </div>
-                        <div class="table-responsive pt-4 px-4 shadow">
+                        <div class="table-responsive p-4 shadow">
                             <table class="table w-100 table-hover">
                                 <thead>
                                     <tr class="text-center">
@@ -289,136 +143,81 @@
                                     
                                 </tbody>
                             </table>
-                            <div class="mt-2 form-group row justify-content-end">
-                                <div class="col-lg-6 text-end">
-                                    <button id="saveDonationItem" class="btn btn-info text-light">Save Donation Item</button>
-                                </div>
-                            </div>
                         </div>
-                        <div class="mt-4 p-4 shadow">
-                            <div class="d-flex justify-content-between align-items-center border-bottom py-4 mt-4">
-                                <div><b>Departemen</b></div>
-                            </div>
+                        <div class="mt-4 p-4">
                             <div class="mt-4 form-group row">
-                                <div class="col-lg-12">
-                                    <label for="">Pilih Departemen</label>
-                                    <select class="form-control" id="departemen">
-                                        <option value="">- PILIH -</option>
-                                        <option value="Retail-Konter" <?= $donasi->departemen == "Retail-Konter" ? "selected" : "" ?>>Retail-Konter</option>
-                                        <option value="Retail-Bank" <?= $donasi->departemen == "Retail-Bank" ? "selected" : "" ?>>Retail-Bank</option>
-                                        <option value="MPZ" <?= $donasi->departemen == "MPZ" ? "selected" : "" ?>>MPZ</option>
-                                        <option value="Penjemputan" <?= $donasi->departemen == "Penjemputan" ? "selected" : "" ?>>Penjemputan</option>
+                                <div class="col-lg-6">
+                                    <label for="">Select Bank Tujuan</label>
+                                    <select class="form-control" id="bank">
+                                    </select>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="">Select Kode Rekening</label>
+                                    <select class="form-control" id="select_kode_rekening">
+                                        <option value="">- Pilih Bank Terlebih Dahulu -</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group row justify-content-end">
-                                <div class="col-lg-6 text-end">
-                                    <button id="saveDepartment" class="btn btn-info text-light">Save Department</button>
+                            <div class="mt-4 form-group row">
+                                <div class="col-lg-3">
+                                    <label for="">Bank Pengirim</label>
+                                    <select class="form-control" id="bank_pengirim">
+                                    </select>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label for="">No. Rekening Pengirim</label>
+                                    <input type="text" class="form-control" id="no_rekening" value="<?= $donasi->no_rek_pengirim ?>"/>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label for="">Atas Nama Pengirim</label>
+                                    <input type="text" class="form-control" id="atas_nama_pengirim" value="<?= $donasi->atas_nama_pengirim ?>"/>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label for="">Departemen</label>
+                                    <select class="form-control" id="departemen">
+                                        <option value="">- PILIH -</option>
+                                        <option value="Retail-Konter">Retail-Konter</option>
+                                        <option value="Retail-Bank">Retail-Bank</option>
+                                        <option value="MPZ">MPZ</option>
+                                        <option value="Penjemputan">Penjemputan</option>
+                                    </select>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row mt-4 p-4 shadow justify-content-end mx-1">
-                        <div class="col-lg-6">
-                            <div class="d-flex justify-content-between mb-2">
-                                <div>Pembayaran Tunai :</div>
-                                <div>Rp. 20.000,00</div>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <div>Pembayaran Bank :</div>
-                                <div>Rp. 0,00</div>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <div>Pembayaran Mitra :</div>
-                                <div>Rp. 0,00</div>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <div>Pembayaran Barang :</div>
-                                <div>Rp. 0,00</div>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <div>Total Donasi :</div>
-                                <div>Rp. 20.000,00</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="row mt-4">
-        <div class="col-lg-12 mb-lg-0 mb-4">
-            <div class="card">
-                <div class=" pb-0 border-bottom">
-                    <div class="d-flex p-3 justify-content-between align-items-center">
-                        <div>
-                            <b class="">Status Notifikasi</b>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-100 p-4">
-                    <div class="stepper p-4 d-flex flex-column ml-2">
-                        <?php 
-                        foreach ($log_notifikasi as $key => $log) { ?>
-                            <div class="d-flex mb-1">
-                                <div class="d-flex flex-column pr-4 align-items-center">
-                                    <div class="rounded-circle p-2 bg-warning text-white mb-1">
-                                        <div style="width:10px;height:10px;border-radius:50%;background:#FFF">&nbsp;</div>
+                            <div class="mt-4 form-group row">
+                                <div class="col-lg-12">
+                                    <label for="">Bukti Transfer</label>
+                                    <input type="file" class="form-control" id="bukti_tf"/>
+                                    <div class="mt-1" style="width:100px;height:100px">
+                                        <a href="<?= base_url('user-uploads/bukti-tf-konfirmasi/').$donasi->bukti_tf ?>" target="_blank"><img src="<?= base_url('user-uploads/bukti-tf-konfirmasi/').$donasi->bukti_tf ?>" width="100%"></a>
                                     </div>
-                                    <div class="line h-100"></div>
-                                </div>
-                                <div class="mx-2">
-                                    <h5 class="text-dark"><?= date('d M Y H:i', strtotime($log->datetime_notifikasi)) ?></h5>
-                                    <p class="lead text-muted pb-3"><i><?= $log->keterangan ?></i></p>
                                 </div>
                             </div>
-                            <?php 
-                        }
-                        ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="row mt-4">
-        <div class="col-lg-12 mb-lg-0 mb-4">
-            <div class="card">
-                <div class=" pb-0 border-bottom">
-                    <div class="d-flex p-3 justify-content-between align-items-center">
-                        <div>
-                            <b class="">Log Donasi</b>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-100 p-4">
-                    <div class="stepper p-4 d-flex flex-column ml-2">
-                        <?php 
-                        $no = 1;
-                        foreach ($log_donasi as $key => $log) { ?>
-                            <div class="d-flex mb-1">
-                                <div class="d-flex flex-column pr-4 align-items-center">
-                                    <div class="rounded-circle p-2 bg-warning text-white mb-1">
-                                        <div style="width:10px;height:10px;border-radius:50%;background:#FFF">&nbsp;</div>
-                                    </div>
-                                    <div class="line h-100"></div>
-                                </div>
-                                <div class="mx-2">
-                                    <h5 class="text-dark"><?= date('d M Y H:i', strtotime($log->datetime_action)) ?></h5>
-                                    <p class="lead text-muted pb-3"><i><?= $log->email_user ?> <?= $log->keterangan ?></i></p>
+                            <div class="mt-4 form-group row">
+                                <div class="col-lg-12">
+                                    <label for="">Keterangan</label>
+                                    <input type="text" class="form-control" id="keterangan_donasi" value="<?= $donasi->keterangan_donasi ?>"/>
                                 </div>
                             </div>
-                            <?php 
-                        }
-                        ?>
+                            
+                            <div class="mt-4 form-group row justify-content-end">
+                                <div class="col-lg-12">
+                                    <label class="">Total Donasi</label>
+                                    <input type="text" class="form-control" id="total_donasi" value="Rp0" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="d-flex px-4 pt-2 justify-content-end">
+                            <button class="btn btn-primary" id="saveDonasi">Simpan</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 
 <!-- Modal Donatur -->
 <div class="modal fade" id="modalDonatur" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -430,7 +229,6 @@
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
-                    <a href="<?= base_url('donasi/new') ?>" class="btn btn-primary">Tambah Donatur</a>
                     <table class="table" id="tbDonatur">
                         <thead>
                             <tr>
@@ -459,6 +257,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Item Baru</h5>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
             </div>
             <div class="modal-body">
                 <div class="form-group row">
@@ -489,11 +288,11 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row d-none">
                     <div class="col-lg-12">
                         <label for="">Tipe Donasi</label>
                         <select class="form-control" id="tipe_donasi">
-                            <option value="uang">Uang</option>
+                            <option value="uang" selected>Uang</option>
                             <option value="barang">Barang</option>
                         </select>
                     </div>
@@ -548,33 +347,10 @@
     </div>
 </div>
 
-<!-- Modal Req Void -->
-<div class="modal fade" id="modalReqVoid" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Request Void</h5>
-            </div>
-            <div class="modal-body">
-                <div class="form-group row">
-                    <div class="col-lg-12">
-                        <label for="">Keterangan</label>
-                        <input type="text" class="form-control" id="keterangan_void">
-                        <small>Harap masukkan <b>keterangan</b></small>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="btnSubmitVoid">Confirm</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
     var list_item = `<?= $list_item_donasi ?>`;
     var id_donasi = `<?= $donasi->id ?>`;
+    var delete_item = [];
     list_item = list_item == "" ? "" : JSON.parse(list_item);
     var list_item_old = list_item;
     $(document).ready(function () {
@@ -582,8 +358,75 @@
         list_item.forEach(e => {
             e.temp_id = null
         });
-        loadItemDonasi(data)
+        loadItemDonasi(data);
+
+        var id_bank_tujuan = "<?= $donasi->id_bank_tujuan ?>";
+        var bank_tujuan = "<?= $donasi->bank_tujuan ?>";
+        var kode_rekening = "<?= $donasi->kode_rekening ?>";
+        var id_bank_pengirim = "<?= $donasi->id_bank_pengirim ?>";
+        var bank_pengirim = "<?= $donasi->bank_pengirim ?>";
+        var departemen = "<?= $donasi->departemen ?>";
+        $("#bank").html(`<option value="${id_bank_tujuan}">${bank_tujuan}</option>`).val(id_bank_tujuan);
+        $("#select_kode_rekening").html(`<option value="${kode_rekening}">${kode_rekening}</option>`).val(kode_rekening);
+        $("#bank_pengirim").html(`<option value="${id_bank_pengirim}">${bank_pengirim}</option>`).val(id_bank_pengirim);
+        $("#departemen").val(departemen).trigger("change")
     })
+
+    function loadItemDonasi(data) {
+        var html = "";
+        var total_donasi = 0;
+        data.forEach(e => {
+            var nama_project = "";
+            if (e.id_project_donasi != "" && e.id_project_donasi != null) {
+                nama_project = `<div>Nama Project : ${e.nama_project}</div>`
+            }
+            var nama_program = "";
+            if (e.id_program_donasi != "" && e.id_program_donasi != null) {
+                nama_program = `<div>Nama Program : ${e.program_donasi}</div>`
+            }
+            var detail_donasi = "";
+            var jumlah = 0;
+            if (e.tipe_donasi == "uang") {
+                jumlah = e.nominal;
+            } else {
+                jumlah = parseInt(e.jumlah_barang) * parseInt(e.harga_satuan);
+                detail_donasi += `<div>Nama Barang : ${e.nama_barang}</div>`;
+                detail_donasi += `<div>Jumlah Barang : ${e.jumlah_barang}</div>`;
+            }
+            total_donasi += parseInt(jumlah);
+
+            var id_target = e.id;
+            if (e.id == null) {
+                id_target = e.temp_id;
+            }
+
+            html += `
+            <tr>
+                <td data-bs-toggle="collapse" data-bs-target="#collapse${id_target}">
+                    <span>(<i class="fa fa-plus td-icon"></i>)</span> ${e.jenis_donasi}
+                    <div class="collapse mt-4 w-100" id="collapse${id_target}">
+                        <div>Atas Nama : ${e.atas_nama}</div>
+                        ${nama_project}
+                        ${nama_program}
+                        ${detail_donasi}
+                    </div>
+                </td>
+                <td class="text-end">
+                    Rp${formatRupiah(jumlah)},00
+                </td>
+                <td>
+                    <div class="d-flex justify-content-center">
+                        <div class="mx-1">
+                            <i class="fa fa-edit text-info edit-item" data-id="${id_target}"></i>
+                        </div>
+                    </div>
+                </td>
+            </tr>`;
+            $("#total_donasi").val("Rp"+formatRupiah(total_donasi)+",00");
+        });
+
+        $("#tbItem").html(html);
+    }
 
     var table = $('#tbDonatur').DataTable( {
         "processing": true,
@@ -598,12 +441,17 @@
         "bDestroy":true,
     });
 
+    $("#jumlah_barang, #harga_satuan").on("keyup, change", function () {
+        var qty = $("#jumlah_barang").val() == "" ? 0 : $("#jumlah_barang").val();
+        var price = $("#harga_satuan").val() == "" ? 0 : $("#harga_satuan").val();
+        $("#nominal").val(parseInt(qty) * parseInt(price));
+    })
+
     $(document).on("click", ".select-donatur", function (e) {
         var id_donatur = $(this).data("id");
         $.ajax({
-            type: 'POST',
-            url: '<?= base_url('donasi/update_email_donatur') ?>',
-            data: {id_donasi: id_donasi, id_donatur: id_donatur},
+            type: 'GET',
+            url: '<?= base_url('donatur/get_donatur_by_id') ?>?id_donatur=' + id_donatur,
             success: function(response) {
                 var res = JSON.parse(response);
                 if (res.status) {
@@ -616,7 +464,6 @@
                     $("#address").html(data.address);
                     $("#tipe_donatur").html(data.tipe_donatur);
                     $("#kode_rekening").html(data.kode_rekening);
-                    showSuccessMessage(res.message);
                 } else {
                     showErrorMessage(res.message);
                 }
@@ -678,6 +525,7 @@
 
     function loadItemDonasi(data) {
         var html = "";
+        console.log(data);
         var total_donasi = 0;
         data.forEach(e => {
             var nama_project = "";
@@ -699,16 +547,11 @@
             }
             total_donasi += parseInt(jumlah);
 
-            var id_target = e.id;
-            if (e.id == null) {
-                id_target = e.temp_id;
-            }
-
             html += `
             <tr>
-                <td data-bs-toggle="collapse" data-bs-target="#collapse${id_target}">
+                <td data-bs-toggle="collapse" data-bs-target="#collapse${e.id}">
                     <span>(<i class="fa fa-plus td-icon"></i>)</span> ${e.jenis_donasi}
-                    <div class="collapse mt-4 w-100" id="collapse${id_target}">
+                    <div class="collapse mt-4 w-100" id="collapse${e.id}">
                         <div>Atas Nama : ${e.atas_nama}</div>
                         ${nama_project}
                         ${nama_program}
@@ -721,7 +564,10 @@
                 <td>
                     <div class="d-flex justify-content-center">
                         <div class="mx-1">
-                            <i class="fa fa-edit text-info edit-item" data-id="${id_target}"></i>
+                            <i class="fa fa-edit text-info edit-item" data-id="${e.id}"></i>
+                        </div>
+                        <div class="mx-1">
+                            <i class="fa fa-trash text-danger delete-item" data-id="${e.id}"></i>
                         </div>
                     </div>
                 </td>
@@ -731,42 +577,6 @@
 
         $("#tbItem").html(html);
     }
-    
-    $("#saveDepartment").click(function (e) {
-        var departemen = $("#departemen").val();
-        $.ajax({
-            type: 'POST',
-            url: '<?= base_url('donasi/update_departemen') ?>',
-            data: {id_donasi: id_donasi, departemen: departemen},
-            success: function(response) {
-                var res = JSON.parse(response);
-                if (res.status) {
-                    showSuccessMessage(res.message);
-                } else {
-                    showErrorMessage(res.message);
-                    $("#departemen").val("<?= $donasi->departemen ?>").trigger("change");
-                }
-            }
-        });
-    })
-
-    $("#saveDonationItem").click(function () {
-        $.ajax({
-            type: 'POST',
-            url: '<?= base_url('donasi/update_item_donasi') ?>',
-            data: {id_donasi: id_donasi, list_item: list_item},
-            success: function(response) {
-                var res = JSON.parse(response);
-                if (res.status) {
-                    showSuccessMessage(res.message);
-                } else {
-                    showErrorMessage(res.message);
-                    list_item = list_item_old;
-                    loadItemDonasi(list_item);
-                }
-            }
-        });
-    })
 
     function getRandomString(length) {
         let result = '';
@@ -774,12 +584,74 @@
         const charactersLength = characters.length;
         let counter = 0;
         while (counter < length) {
-          result += characters.charAt(Math.floor(Math.random() * charactersLength));
-          counter += 1;
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        counter += 1;
         }
         return result;
     }
 
+    $("#tbItem").on("click", ".edit-item", function () {
+        var id = $(this).data("id");
+        var obj = $(this);
+
+        if (isNaN(id)) {
+            list_item.forEach(e => {
+                if (e.temp_id == id) {
+                    data = e;
+                }
+            });
+        } else {
+            var data = list_item.filter(o => o.id.includes(id));
+            data = data[0];
+        }
+
+        if (data.length == 0) {
+            showErrorMessage("Terjadi Kesalahan");
+            return false;
+        }
+
+        $("#jenis_donasi").val(data.id_jenis_donasi).trigger("change");
+        setTimeout(function() {  
+            $("#program_donasi").val(data.id_program_donasi).trigger("change"); 
+            setTimeout(function() {  $("#project_donasi").val(data.id_project_donasi).trigger("change"); }, 1000);
+        }, 1000);
+        action_item = "update";
+        var id = data.id == null ? data.id : data.temp_id;
+        $("#id_item").val(data.id);
+        $("#atas_nama").val(data.atas_nama);
+        $("#tipe_donasi").val(data.tipe_donasi).trigger("change");
+        $("#kategori_barang").val(data.kategori_barang);
+        $("#nama_barang").val(data.nama_barang);
+        $("#jumlah_barang").val(data.jumlah_barang);
+        $("#harga_satuan").val(data.harga_satuan);
+        if (data.tipe_donasi == "uang") {
+            $("#nominal").val(data.nominal);
+        } else {
+            $("#nominal").val(parseInt(data.jumlah_barang) * parseInt(data.harga_satuan));
+        }
+        $("#keterangan").val(data.keterangan);
+        $("#modalItem").modal("show");
+    })
+
+    $("#tbItem").on("click", ".delete-item", function (e) {
+        e.stopImmediatePropagation();
+        var id = $(this).data("id");
+
+        var idx_delete = null;
+        for (let i = 0; i < list_item.length; i++) {
+            if (list_item[i].id == id) {
+                idx_delete = i;
+                break;
+            }
+        }
+
+        if (idx_delete != null) {
+            list_item.splice(idx_delete, 1); 
+        }
+        $("#total_donasi").val("Rp0")
+        loadItemDonasi(list_item);
+        delete_item.push(id);
+    })
 
     $("#saveItem").click(function () {
         if (action_item == "add") {
@@ -846,12 +718,19 @@
         loadItemDonasi(list_item);
         $("#modalItem").modal("hide")
     })
-    
+
+    $("#jumlah_barang, #harga_satuan").keyup(function () {
+        var jumlah_barang = $("#jumlah_barang").val() == "" ? 0 : parseInt($("#jumlah_barang").val());
+        var harga_satuan = $("#harga_satuan").val() == "" ? 0 : parseInt($("#harga_satuan").val())
+        var nominal = jumlah_barang * harga_satuan;
+        $("#nominal").val(nominal); 
+    })
+
     $("#tbItem").on("click", `td`, function () {
         if ($(this).find(".fa-edit").length > 0) {
             return false;
         }
-    
+
         if ($(this).attr(`[data-bs-toggle="collapse"]`) == undefined) {
             var check = $(this).closest("tr").find(`.collapse`).hasClass("show");
             if (check) {
@@ -860,7 +739,7 @@
                 $(this).closest("tr").find(`.collapse`).addClass("show");
             }
         }
-    
+
         var check_icon = $(this).closest("tr").find(".td-icon").hasClass("fa-plus");
         console.log(check_icon);
         if (check_icon) {
@@ -868,7 +747,7 @@
         } else {
             $(this).closest("tr").find(".td-icon").removeClass("fa-minus").addClass("fa-plus");
         }
-    
+
         if ($(".td-icon.fa-minus").length > 0) {
             $(".th-icon").removeClass("fa-plus").addClass("fa-minus");
         } else {
@@ -876,63 +755,106 @@
         }
     });
 
-    $("#tbItem").on("click", ".edit-item", function () {
-        var id = $(this).data("id");
-        var obj = $(this);
+    $("#saveDonasi").click(function () {
+        var bukti_tf = $('#bukti_tf').prop('files')[0];
+        var form_data = new FormData(); 
+        var save_item = list_item;
+        form_data.append('id_donasi', "<?= $donasi->id ?>");
+        form_data.append('email_donatur', $("#email_donatur").html());
+        form_data.append('tgl_donasi', $("#tgl_donasi").val());
+        form_data.append('bank_tujuan', $("#bank").val());
+        form_data.append('kode_rekening', $("#select_kode_rekening").val());
+        form_data.append('bank_pengirim', $("#bank_pengirim").val());
+        form_data.append('no_rek_pengirim', $("#no_rekening").val());
+        form_data.append('atas_nama_pengirim', $("#atas_nama_pengirim").val());
+        form_data.append('departemen', $("#departemen").val());
+        form_data.append('bukti_tf', bukti_tf);
+        form_data.append('keterangan_donasi', $("#keterangan_donasi").val());
+        form_data.append('list_item', JSON.stringify(save_item));
+        form_data.append('delete_item', JSON.stringify(delete_item));
 
-        if (isNaN(id)) {
-            list_item.forEach(e => {
-                if (e.temp_id == id) {
-                    data = e;
-                }
-            });
-        } else {
-            var data = list_item.filter(o => o.id.includes(id));
-            data = data[0];
-        }
-
-        if (data.length == 0) {
-            showErrorMessage("Terjadi Kesalahan");
-            return false;
-        }
-
-        $("#jenis_donasi").val(data.id_jenis_donasi).trigger("change");
-        setTimeout(function() {  
-            $("#program_donasi").val(data.id_program_donasi).trigger("change"); 
-            setTimeout(function() {  $("#project_donasi").val(data.id_project_donasi).trigger("change"); }, 1000);
-        }, 1000);
-        action_item = "update";
-        var id = data.id == null ? data.id : data.temp_id;
-        $("#id_item").val(data.id);
-        $("#atas_nama").val(data.atas_nama);
-        $("#tipe_donasi").val(data.tipe_donasi).trigger("change");
-        $("#kategori_barang").val(data.kategori_barang);
-        $("#nama_barang").val(data.nama_barang);
-        $("#jumlah_barang").val(data.jumlah_barang);
-        $("#harga_satuan").val(data.harga_satuan);
-        if (data.tipe_donasi == "uang") {
-            $("#nominal").val(data.nominal);
-        } else {
-            $("#nominal").val(parseInt(data.jumlah_barang) * parseInt(data.harga_satuan));
-        }
-        $("#keterangan").val(data.keterangan);
-        $("#modalItem").modal("show");
-    })
-
-    $("#btnSubmitVoid").click(function () {
-        var keterangan = $("#keterangan_void").val();
         $.ajax({
             type: 'POST',
-            url: '<?= base_url('donasi/request_void') ?>',
-            data: {id_donasi: id_donasi, keterangan: keterangan},
+            url: "<?= base_url('confirmation/update_donasi') ?>",
+            data: form_data,
+            processData: false,
+            contentType: false,
             success: function(response) {
                 var res = JSON.parse(response);
                 if (res.status) {
-                    window.location.href = "<?= base_url('donasi/detail?id=').$this->input->get('id') ?>";
+                    window.location.href = res.data.redirect_url;
                 } else {
                     showErrorMessage(res.message);
                 }
             }
         });
+    })
+
+    $('#bank_pengirim').select2({
+        placeholder: 'No Options',
+        minimumInputLength: 1,
+        ajax: {
+            url: '<?= base_url('confirmation/get_list_bank') ?>',
+            dataType: 'json',
+            delay: 250,
+            data: function(data) {
+                return {
+                    search: data.term // search term
+                };
+            },
+            processResults: function(response) {
+                return {
+                    results: response
+                };
+            },
+            cache: true
+        }
+    })
+
+    $("#departemen").select2();
+    
+    $('#bank').select2({
+        placeholder: 'No Options',
+        minimumInputLength: 1,
+        ajax: {
+            url: '<?= base_url('confirmation/get_list_bank') ?>',
+            dataType: 'json',
+            delay: 250,
+            data: function(data) {
+                return {
+                    search: data.term // search term
+                };
+            },
+            processResults: function(response) {
+                return {
+                    results: response
+                };
+            },
+            cache: true
+        }
+    }).on("select2:select", function (e) {
+        var data = e.params.data;
+        console.log(data);
+        var id_bank = data.id;
+        $('#select_kode_rekening').select2({
+            placeholder: 'No Options',
+            minimumInputLength: 0,
+            ajax: {
+                url: '<?= base_url('confirmation/get_kode_rekening?bank=') ?>'+id_bank,
+                dataType: 'json',
+                delay: 250,
+                data: function(data) {
+                    return {
+                        search: data.term // search term
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        })
     })
 </script>

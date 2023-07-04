@@ -8,6 +8,10 @@ class Donasi extends CI_Controller {
         if(!$this->session->userdata('email_user')) {
             redirect(base_url('login'));
         }
+
+        if ($this->session->userdata('role') != "data entry") {
+            redirect(base_url());
+        }
     }
 
 	public function index() {
@@ -38,7 +42,8 @@ class Donasi extends CI_Controller {
 
     public function get_list_donatur()
 	{
-		$list = $this->M_donatur->get_datatables_donatur();
+        $filter = $this->input->post();
+		$list = $this->M_donatur->get_datatables_donatur($filter);
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $item) {
@@ -51,7 +56,7 @@ class Donasi extends CI_Controller {
 
             $row[] = '<div class="text-center">'.$item->id_donatur.'</div>';
             $row[] = $item->nama_lengkap;
-            $row[] = str_replace("08", "+62", $item->no_hp);
+            $row[] = $item->no_hp;
             $row[] = $item->email_donatur;
             $row[] = $item->kode_rekening;
             $row[] = "<span></span>";
@@ -68,8 +73,8 @@ class Donasi extends CI_Controller {
 
         $output = array(
             "draw" => $_POST['draw'],
-            "recordsTotal" => $this->M_donatur->get_total_donatur(),
-            "recordsFiltered" => $this->M_donatur->get_total_filtered_donatur(),
+            "recordsTotal" => $this->M_donatur->get_total_donatur($filter),
+            "recordsFiltered" => $this->M_donatur->get_total_filtered_donatur($filter),
             "data" => $data,
         );
 
@@ -687,7 +692,7 @@ class Donasi extends CI_Controller {
                 }
 
                 $id_donasi = $donasi->id;
-                $data_donasi = ['status_donasi' => 'collect'];
+                $data_donasi = ['status_donasi' => 'pending'];
                 $this->M_donasi->updateData($id_donasi, $data_donasi);
 
                 $log_donasi = [
