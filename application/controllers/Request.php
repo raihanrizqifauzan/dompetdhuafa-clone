@@ -17,6 +17,7 @@ class Request extends CI_Controller {
 
     public function index()
 	{        
+        $data['list_id_donasi'] = json_encode($this->M_donasi->getDonasiTunaiDraft());
         $data['list_collector'] = $this->M_donasi->getListCollector();
 		$this->load->view("structure/V_head", $data);
 		$this->load->view("structure/V_navbar");
@@ -33,7 +34,7 @@ class Request extends CI_Controller {
         $atas_nama_pengirim = $this->input->post("atas_nama_pengirim", TRUE);
         $keterangan_donasi = $this->input->post("keterangan_donasi", TRUE);
         $list_donasi = json_decode($this->input->post('list_donasi', TRUE), TRUE);
-        $id_collector = $this->input->post('id_collector', TRUE);
+        $email_user = $this->input->post('email_user', TRUE);
         $no_rek_pengirim = $this->input->post('no_rek_pengirim', TRUE);
         $email_user = $this->session->email_user;
         date_default_timezone_set("Asia/Jakarta");
@@ -119,7 +120,7 @@ class Request extends CI_Controller {
 
             // Save Request Collect
             $save_request_collect = [
-                'id_collector' => $id_collector,
+                'email_user' => $email_user,
                 'list_donasi' => json_encode($list_donasi),
                 'datetime_collect' => date("Y-m-d H:i:s"),
                 'departemen' => $departemen,
@@ -165,5 +166,36 @@ class Request extends CI_Controller {
         }
         return $result;
     }
+
+    public function get_draft_donasi_tunai()
+	{
+        $this->load->model('M_request');
+        $filter = $this->input->post();
+		$list = $this->M_request->get_datatables_request($filter);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $key => $item) {
+            $row = [];
+
+            $no = $key+1;
+            $row[] = $item->id;
+            $row[] = $item->id;
+            $row[] = strtoupper($item->nama_lengkap);
+            $row[] = '<div class="text-end">'.$item->jumlah_item_donasi.'</div>';
+            $row[] = '<div class="text-center">'.$item->jenis_pembayaran.'</div>';
+            $row[] = '<div class="text-end">Rp'.number_format($item->total_donasi).'</div>';
+            $row[] = '<div class="text-center">'.date("Y-m-d", strtotime($item->tgl_donasi)).'</div>';
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->M_request->get_total_request($filter),
+            "recordsFiltered" => $this->M_request->get_total_request_filtered($filter),
+            "data" => $data,
+        );
+
+        echo json_encode($output);
+	}
 
 }

@@ -194,6 +194,11 @@
                                                 </a>
                                             </li>
                                             <li class="nav-item">
+                                                <a class="nav-link collapsed" href="<?= base_url('request') ?>">
+                                                    <span class="nav-link-text ms-1">Request Settle</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
                                                 <a class="nav-link collapsed" href="<?= base_url('donasi/counter/recap') ?>">
                                                     <span class="nav-link-text ms-1">&bull;&nbsp;&nbsp;&nbsp; Rekapan Konter</span>
                                                 </a>
@@ -220,12 +225,6 @@
                                             </li>
                                         </ul>
                                     </div>
-                                </li>
-                                
-                                <li class="nav-item">
-                                    <a class="nav-link collapsed" href="<?= base_url('request') ?>">
-                                        <span class="nav-link-text ms-1">Request Settle</span>
-                                    </a>
                                 </li>
                                 
                                 <li class="nav-item">
@@ -280,7 +279,7 @@
                 <div class="mx-2 text-light py-2 px-3 border-radius-lg item-menu <?= ($this->uri->segment(1) == 'dashboard' || empty($this->uri->segment(1))) ? 'active' : '' ?>"><a class="text-light" href="<?= base_url('dashboard') ?>" style="text-decoration:none"><b>Dashboard</b></a></div>
             <?php 
                 if ($this->session->role == "data entry") { ?>
-                    <div class="dropdown mx-2 text-light py-2 px-3 border-radius-lg item-menu  <?= ($this->uri->segment(1) == 'donasi') ? 'active' : ''?>">
+                    <div class="dropdown mx-2 text-light py-2 px-3 border-radius-lg item-menu  <?= ($this->uri->segment(1) == 'donasi') || ($this->uri->segment(1) == 'request') ? 'active' : ''?>">
                         <button class="btn-menu-nav" id="dropdownMenuDonasi" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Donasi
                         </button>
@@ -298,6 +297,7 @@
                                     <!-- <li><a class="dropdown-item" href="<?= base_url('donasi/counter/list') ?>">Daftar Konter</a></li> -->
                                     <li><a class="dropdown-item" href="<?= base_url('donasi/counter/new') ?>">Input</a></li>
                                     <li><a class="dropdown-item" href="<?= base_url('donasi/counter/collect') ?>">Collect</a></li>
+                                    <li><a class="dropdown-item" href="<?= base_url('request') ?>">Request Settle</a></li>
                                     <li><a class="dropdown-item" href="<?= base_url('donasi/counter/recap') ?>">Rekapan Konter</a></li>
                                 </ul>
                             </li>
@@ -310,9 +310,6 @@
                                     <li><a class="dropdown-item" href="<?= base_url('confirmation') ?>">List</a></li>
                                     <li><a class="dropdown-item" href="<?= base_url('confirmation/new') ?>">Input</a></li>
                                 </ul>
-                            </li>
-                            <li class="list-down-menu">
-                                <a class="dropdown-item" href="<?= base_url('request') ?>">Request Settle</a>
                             </li>
                             <li class="list-down-menu">
                                 <a class="dropdown-item" href="#">

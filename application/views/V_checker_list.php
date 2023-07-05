@@ -47,7 +47,7 @@
                         <table class="table table-striped" id="tbRequest">
                             <thead>
                                 <tr>
-                                    <th>KOLEKTOR</th>
+                                    <th>REQUESTER</th>
                                     <th>TOTAL KONTER</th>
                                     <th>TOTAL TRANSAKSI</th>
                                     <th>JUMLAH</th>

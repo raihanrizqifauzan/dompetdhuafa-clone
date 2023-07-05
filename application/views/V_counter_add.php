@@ -161,7 +161,7 @@
                 </div>
                 <div class="md-step">
                     <div class="md-step-circle"><span>2</span></div>
-                    <div class="md-step-title">COLLECT</div>
+                    <div class="md-step-title">PENDING</div>
                     <div class="md-step-bar-left"></div>
                     <div class="md-step-bar-right"></div>
                 </div>

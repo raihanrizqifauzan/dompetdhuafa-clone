@@ -84,7 +84,7 @@
                                 <tr>
                                     <th>Kode Rekening Tujuan</th>
                                     <th>:</th>
-                                    <td width="80%" id="kode_rekening_tujuan"><?= $donasi->kode_rekening ?></td>
+                                    <td width="80%" id="kode_rekening_tujuan"><?= $donasi->kode_rekening_donasi ?></td>
                                 </tr>
                                 <tr>
                                     <th>Nama Bank Pengirim</th>
@@ -362,7 +362,7 @@
 
         var id_bank_tujuan = "<?= $donasi->id_bank_tujuan ?>";
         var bank_tujuan = "<?= $donasi->bank_tujuan ?>";
-        var kode_rekening = "<?= $donasi->kode_rekening ?>";
+        var kode_rekening = "<?= $donasi->kode_rekening_donasi ?>";
         var id_bank_pengirim = "<?= $donasi->id_bank_pengirim ?>";
         var bank_pengirim = "<?= $donasi->bank_pengirim ?>";
         var departemen = "<?= $donasi->departemen ?>";

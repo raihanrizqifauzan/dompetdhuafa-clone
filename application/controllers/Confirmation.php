@@ -161,12 +161,13 @@ class Confirmation extends CI_Controller {
         $bank_pengirim = $this->input->post("bank_pengirim", TRUE);
         $atas_nama_pengirim = $this->input->post("atas_nama_pengirim", TRUE);
         $keterangan_donasi = $this->input->post("keterangan_donasi", TRUE);
+        $no_rek_pengirim = $this->input->post("no_rek_pengirim", TRUE);
         $jenis_pembayaran = "bank";
         $email_user = $this->session->email_user;
 
         try {
 			$this->db->trans_start();
-            $list_required = ['email_donatur', 'tgl_donasi', 'departemen', 'bank_tujuan', 'kode_rekening', 'bank_pengirim', 'atas_nama_pengirim', 'keterangan_donasi'];
+            $list_required = ['email_donatur', 'tgl_donasi', 'departemen', 'bank_tujuan', 'kode_rekening', 'bank_pengirim', 'atas_nama_pengirim', 'no_rek_pengirim'];
 
             foreach ($list_required as $key => $field) {
                 if (empty($this->input->post($field))) {
@@ -298,7 +299,7 @@ class Confirmation extends CI_Controller {
             $flashdata = ['notif_message' => "Berhasil menyimpan data donasi", 'notif_type' => "success"];
             $this->session->set_userdata('flashdata', $flashdata);
 
-            $data_donasi['list_item'] = $item_donasi;
+            // $data_donasi['list_item'] = $item_donasi;
             $data_donasi['redirect_url'] = base_url('confirmation/detail?id=').base64_encode($id_donasi_inserted);
 
             $response = ['status' => true, 'message' => "Donasi berhasil di tambahkan", 'data' => $data_donasi];

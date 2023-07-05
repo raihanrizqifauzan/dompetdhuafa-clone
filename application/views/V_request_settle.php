@@ -29,13 +29,13 @@
                         <div>
                             <b class="">Request Settle</b>
                         </div>
-                        <div>
+                        <!-- <div>
                             <a href="<?= base_url('confirmation') ?>" class="btn btn-sm mb-0 px-3" style="background-color: #F3F6F9;color:#7E8299"><i class="fa fa-arrow-left"></i> Back</a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="w-100 p-4">
-                    <div class="p-4 shadow">
+                    <!-- <div class="p-4 shadow">
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCollector">Pilih User</button>
                         </div>
@@ -61,27 +61,34 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
-                    <div class="p-4 mt-2 shadow">
-                        <div class="d-flex justify-content-center">
-                            <div class="table-responsive">
-                                <table class="table table-striped" id="tbDonasi">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center"><input type="checkbox" class="check-all"></th>
-                                            <th>DONATION HID</th>
-                                            <th>NAMA DONATUR</th>
-                                            <th>DONATION ITEM</th>
-                                            <th>TIPE PEMBAYARAN</th>
-                                            <th>JUMLAH</th>
-                                            <th>TGL TRANSFER</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                    </div> -->
+                    <div class="mt-2">
+                        <div class="p-4 shadow">
+                            <div class="row">
+                                <div class="col-lg-12 mb-2">
+                                    <b>List Draft Donasi</b>
+                                </div>
                             </div>
-                            
+                            <div class="row" style="width:100%!important;">
+                                <div class="col-lg-12 table-responsive">
+                                    <table class="table table-striped" id="tbDonasi">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center"><input type="checkbox" class="check-all"></th>
+                                                <th>DONATION HID</th>
+                                                <th>NAMA DONATUR</th>
+                                                <th>DONATION ITEM</th>
+                                                <th>TIPE PEMBAYARAN</th>
+                                                <th>JUMLAH</th>
+                                                <th>TGL TRANSFER</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                            </div>
                         </div>
                         <div class="mt-4 p-4">
                             <div class="mt-4 form-group row">
@@ -186,7 +193,9 @@
 </div>
 
 <script>
-    var id_collector = null, checked_donasi = [];
+    var email_user = "<?= $this->session->email_user ?>", checked_donasi = [];
+    var list_id_draft = JSON.parse(`<?= $list_id_donasi ?>`);
+    console.log(list_id_draft);
 
     var tbDonasi = $('#tbDonasi').DataTable( {
         "processing": true,
@@ -195,9 +204,9 @@
         ordering: false,
         searching: true,
         bInfo: false,
-        paginate: false,
+        // paginate: false,
         "ajax": {
-            "url" : "<?= base_url('donasi/get_counter_collect') ?>",
+            "url" : "<?= base_url('request/get_draft_donasi_tunai') ?>",
             "type": "POST",
             "data": function(data) {
                 data.id_donasi = "";
@@ -215,7 +224,23 @@
             }
         },
         "bDestroy":true,
+        "columnDefs":[
+            {
+                targets: 0,
+                render: render_checklist
+            }
+        ],
     });
+
+    function render_checklist(id_donasi) {
+        var checked = "";
+        if (checked_donasi.includes(id_donasi) || checked_donasi.includes(parseInt(id_donasi))) {
+            checked = "checked";
+        }
+
+        var html = `<div class="text-center"><input ${checked} type="checkbox" class="check-donasi" data-id="${id_donasi}"></div>`;
+        return html;
+    }
 
     $(document).on("click", ".select-collector", function (e) {
         id_collector = $(this).data("id");
@@ -243,10 +268,12 @@
             $(".check-donasi").each(function (i, obj) {
                 $(obj).prop("checked", true).trigger("change");
             })
+            checked_donasi = list_id_draft;
         } else {
             $(".check-donasi").each(function (i, obj) {
                 $(obj).prop("checked", false).trigger("change");
             })
+            checked_donasi = [];
         }
     })
 
@@ -273,7 +300,7 @@
     $("#saveRequest").click(function () {
         var bukti_tf = $('#bukti_tf').prop('files')[0];
         var form_data = new FormData(); 
-        form_data.append('id_collector', id_collector);
+        form_data.append('email_user', email_user);
         form_data.append('bank_tujuan', $("#bank").val());
         form_data.append('kode_rekening', $("#select_kode_rekening").val());
         form_data.append('bank_pengirim', $("#bank_pengirim").val());
