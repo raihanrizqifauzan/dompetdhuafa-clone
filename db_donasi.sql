@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 04, 2023 at 05:46 PM
+-- Generation Time: Jul 05, 2023 at 03:13 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.31
 
@@ -103,7 +103,11 @@ INSERT INTO `tb_donasi` (`id`, `email_input`, `datetime_create`, `email_donatur`
 (8, 'endi@test.com', '2023-06-17 10:38:34', 'raihanrizqif@gmail.com', 'Retail-Konter', 'tunai', 'counter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-06-17', 20000000, 'settle', NULL, NULL, 'BRANCH TEST 001'),
 (9, 'endi@test.com', '2023-06-20 15:08:28', 'tikymejan@mailinator.com', 'Retail-Konter', 'tunai', 'counter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-06-20', 500000, 'request_void', 'tes', NULL, 'BRANCH TEST 001'),
 (10, 'endi@test.com', '2023-06-30 15:02:30', 'raihanrizqif@gmail.com', 'Retail-Konter', 'tunai', 'counter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-06-30', 2000000, 'settle', NULL, NULL, 'BRANCH TEST 002'),
-(11, 'endi@test.com', '2023-07-01 10:32:59', 'raihanrizqif@gmail.com', 'Retail-Konter', 'tunai', 'counter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-07-01', 10000000, 'draft', NULL, NULL, 'BRANCH TEST 001');
+(11, 'endi@test.com', '2023-07-01 10:32:59', 'raihanrizqif@gmail.com', 'Retail-Konter', 'tunai', 'counter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-07-01', 10000000, 'pending', NULL, NULL, 'BRANCH TEST 001'),
+(13, 'endi@test.com', '2023-07-05 13:56:53', 'raihanrizqif@gmail.com', 'Retail-Bank', 'bank', 'bank', 1, 'BCA', '4966', 2, 'BRI', NULL, 'Usman', '1688558213.jpg', 'Tes', '2023-07-05', 25000000, 'draft', NULL, NULL, 'BRANCH TEST 001'),
+(14, 'endi@test.com', '2023-07-05 13:59:19', 'tikymejan@mailinator.com', 'Retail-Konter', 'bank', 'bank', 1, 'BCA', '4967', 1, 'BCA', NULL, 'Rasd', '1688558359.jpg', 'Tes', '2023-07-05', 24600000, 'draft', NULL, NULL, 'BRANCH TEST 001'),
+(15, 'endi@test.com', '2023-07-05 14:01:24', 'tikymejan@mailinator.com', 'Retail-Konter', 'bank', 'bank', 1, 'BCA', '4967', 1, 'BCA', '125442', 'Rasd', '1688558422.jpg', 'Tes', '2023-07-05', 24600000, 'draft', NULL, NULL, 'BRANCH TEST 001'),
+(16, 'endi@test.com', '2023-07-05 14:36:56', 'tikymejan@mailinator.com', 'Retail-Konter', 'tunai', 'counter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-07-05', 20000000, 'pending', NULL, NULL, 'BRANCH TEST 001');
 
 -- --------------------------------------------------------
 
@@ -138,7 +142,11 @@ INSERT INTO `tb_donasi_item` (`id`, `id_donasi`, `id_jenis_donasi`, `id_program_
 (12, 8, 1, 1, 2, 'uang', 'Tes', '', '', 0, 0, 20000000, ''),
 (14, 9, 2, 4, 1, 'barang', 'PPP', 'asset', 'Semen', 10, 50000, 500000, ''),
 (15, 10, 1, 1, 2, 'uang', 'Tes', '', '', 0, 0, 2000000, 'Tes'),
-(16, 11, 2, 4, 1, 'uang', 'Tes', '', '', 0, 0, 10000000, 'A');
+(16, 11, 2, 4, 1, 'uang', 'Tes', '', '', 0, 0, 10000000, 'A'),
+(19, 13, 1, 1, 2, 'uang', 'Ozil', '', '', 0, 0, 25000000, ''),
+(20, 14, 2, 4, 1, 'uang', 'Ujang', '', '', 0, 0, 24600000, 'Ressss'),
+(21, 15, 2, 4, 1, 'uang', 'Ujang', '', '', 0, 0, 24600000, 'Ressss'),
+(22, 16, 1, 1, 2, 'uang', 'Tes', '', '', 0, 0, 20000000, '');
 
 -- --------------------------------------------------------
 
@@ -199,7 +207,19 @@ INSERT INTO `tb_donasi_log` (`id`, `id_donasi`, `datetime_action`, `email_user`,
 (42, 4, '2023-07-04 22:33:03', 'checker@test.com', 'Donasi telah di approve'),
 (43, 11, '2023-07-04 22:35:09', 'checker@test.com', 'Donasi telah di reject dan kembali status nya menjadi draft'),
 (44, 11, '2023-07-04 22:36:00', 'checker@test.com', 'Donasi telah di reject dan kembali status nya menjadi draft'),
-(45, 11, '2023-07-04 22:36:45', 'checker@test.com', 'Donasi telah di reject dan kembali status nya menjadi draft');
+(45, 11, '2023-07-04 22:36:45', 'checker@test.com', 'Donasi telah di reject dan kembali status nya menjadi draft'),
+(46, 13, '2023-07-05 13:56:53', 'endi@test.com', 'Membuat Donasi via Konter'),
+(47, 14, '2023-07-05 13:59:19', 'endi@test.com', 'Membuat Donasi via Konter'),
+(48, 15, '2023-07-05 14:00:22', 'endi@test.com', 'Membuat Donasi via Konter'),
+(49, 15, '2023-07-05 14:00:39', 'endi@test.com', 'Mengupdate Donasi 15'),
+(50, 15, '2023-07-05 14:01:24', 'endi@test.com', 'Mengupdate Donasi 15'),
+(51, 16, '2023-07-05 14:36:56', 'endi@test.com', 'Membuat Donasi via Konter'),
+(52, 11, '2023-07-05 19:49:07', 'endi@test.com', 'Melakukan Request Collect'),
+(53, 16, '2023-07-05 19:49:07', 'endi@test.com', 'Melakukan Request Collect'),
+(54, 11, '2023-07-05 19:59:21', 'checker@test.com', 'Donasi telah di reject dan kembali status nya menjadi draft'),
+(55, 16, '2023-07-05 19:59:21', 'checker@test.com', 'Donasi telah di reject dan kembali status nya menjadi draft'),
+(56, 16, '2023-07-05 20:00:30', 'endi@test.com', 'Melakukan Request Collect'),
+(57, 11, '2023-07-05 20:05:23', 'endi@test.com', 'Melakukan Request Collect');
 
 -- --------------------------------------------------------
 
@@ -7485,7 +7505,11 @@ INSERT INTO `tb_log_notifikasi` (`id`, `id_donasi`, `keterangan`, `datetime_noti
 (6, 9, 'Pengiriman Whatsapp ke Nomor 081802136200 Berhasil', '2023-06-20 15:08:28', 'tikymejan@mailinator.com', '081802136200'),
 (7, 10, 'Pengiriman Whatsapp ke Nomor 081802136200 Berhasil', '2023-06-30 15:02:30', 'raihanrizqif@gmail.com', '081802136200'),
 (8, 11, 'Pengiriman Whatsapp ke Nomor 081802136200 Berhasil', '2023-07-01 10:32:59', 'raihanrizqif@gmail.com', '081802136200'),
-(9, 12, 'Pengiriman Whatsapp ke Nomor 081802136200 Berhasil', '2023-07-04 14:54:30', 'raihanrizqif@gmail.com', '081802136200');
+(9, 12, 'Pengiriman Whatsapp ke Nomor 081802136200 Berhasil', '2023-07-04 14:54:30', 'raihanrizqif@gmail.com', '081802136200'),
+(10, 13, 'Pengiriman Whatsapp ke Nomor 081802136200 Berhasil', '2023-07-05 13:56:53', 'raihanrizqif@gmail.com', '081802136200'),
+(11, 14, 'Pengiriman Whatsapp ke Nomor 081802136200 Berhasil', '2023-07-05 13:59:19', 'tikymejan@mailinator.com', '081802136200'),
+(12, 15, 'Pengiriman Whatsapp ke Nomor 081802136200 Berhasil', '2023-07-05 14:00:22', 'tikymejan@mailinator.com', '081802136200'),
+(13, 16, 'Pengiriman Whatsapp ke Nomor 081802136200 Berhasil', '2023-07-05 14:36:56', 'tikymejan@mailinator.com', '081802136200');
 
 -- --------------------------------------------------------
 
@@ -7537,7 +7561,7 @@ INSERT INTO `tb_project` (`id`, `id_program_donasi`, `nama_project`) VALUES
 
 CREATE TABLE `tb_request_collect` (
   `id_request` int(11) NOT NULL,
-  `id_collector` int(11) NOT NULL,
+  `email_user` varchar(250) DEFAULT NULL,
   `nama_counter` varchar(250) NOT NULL DEFAULT 'BRANCH TEST 001',
   `list_donasi` text NOT NULL,
   `status_collect` enum('request','approved','rejected') NOT NULL DEFAULT 'request',
@@ -7551,18 +7575,22 @@ CREATE TABLE `tb_request_collect` (
   `atas_nama_pengirim` varchar(250) NOT NULL,
   `departemen` varchar(250) NOT NULL,
   `bukti_tf` text DEFAULT NULL,
-  `keterangan` text DEFAULT NULL
+  `keterangan` text DEFAULT NULL,
+  `id_collector` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tb_request_collect`
 --
 
-INSERT INTO `tb_request_collect` (`id_request`, `id_collector`, `nama_counter`, `list_donasi`, `status_collect`, `datetime_collect`, `id_bank_tujuan`, `bank_tujuan`, `kode_rekening`, `id_bank_pengirim`, `bank_pengirim`, `no_rek_pengirim`, `atas_nama_pengirim`, `departemen`, `bukti_tf`, `keterangan`) VALUES
-(2, 1, 'BRANCH TEST 001', '[\"8\",\"10\"]', 'approved', '2023-07-01 14:52:42', NULL, NULL, '', NULL, NULL, NULL, '', '', NULL, NULL),
-(3, 2, 'BRANCH TEST 001', '[\"11\"]', 'rejected', '2023-07-01 15:33:13', NULL, NULL, '', NULL, NULL, NULL, '', '', NULL, NULL),
-(4, 1, 'BRANCH TEST 001', '[4]', 'approved', '2023-07-04 22:28:23', 1, 'BCA', '4966', 2, 'BRI', '213123123', 'Atas n', 'Retail-Konter', '1688484503.jpg', 'Tes'),
-(5, 2, 'BRANCH TEST 001', '[11]', 'rejected', '2023-07-04 22:30:27', 2, 'BRI', '4911', 1, 'BCA', '15531123', 'Tuuua', 'Retail-Bank', '1688484627.jpg', 'Lunas');
+INSERT INTO `tb_request_collect` (`id_request`, `email_user`, `nama_counter`, `list_donasi`, `status_collect`, `datetime_collect`, `id_bank_tujuan`, `bank_tujuan`, `kode_rekening`, `id_bank_pengirim`, `bank_pengirim`, `no_rek_pengirim`, `atas_nama_pengirim`, `departemen`, `bukti_tf`, `keterangan`, `id_collector`) VALUES
+(2, 'endi@test.com', 'BRANCH TEST 001', '[\"8\",\"10\"]', 'approved', '2023-07-01 14:52:42', NULL, NULL, '', NULL, NULL, NULL, '', '', NULL, NULL, NULL),
+(3, 'endi@test.com', 'BRANCH TEST 001', '[\"11\"]', 'rejected', '2023-07-01 15:33:13', NULL, NULL, '', NULL, NULL, NULL, '', '', NULL, NULL, NULL),
+(4, 'endi@test.com', 'BRANCH TEST 001', '[4]', 'approved', '2023-07-04 22:28:23', 1, 'BCA', '4966', 2, 'BRI', '213123123', 'Atas n', 'Retail-Konter', '1688484503.jpg', 'Tes', NULL),
+(5, 'endi@test.com', 'BRANCH TEST 001', '[11]', 'rejected', '2023-07-04 22:30:27', 2, 'BRI', '4911', 1, 'BCA', '15531123', 'Tuuua', 'Retail-Bank', '1688484627.jpg', 'Lunas', NULL),
+(6, 'endi@test.com', 'BRANCH TEST 001', '[\"11\",\"16\"]', 'rejected', '2023-07-05 19:49:07', 1, 'BCA', '4966', 1, 'BCA', '6332423', 'Tes', 'Retail-Konter', '1688561347.jpg', 'Keterangan', NULL),
+(7, 'endi@test.com', 'BRANCH TEST 001', '[16]', 'request', '2023-07-05 20:00:30', 1, 'BCA', '4966', 2, 'BRI', '342423', 'Tes', 'Retail-Konter', '1688562030.jpg', 'Tes', NULL),
+(8, NULL, 'BRANCH TEST 001', '[\"11\"]', 'request', '2023-07-05 20:05:23', NULL, NULL, '', NULL, NULL, NULL, '', '', NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -7585,7 +7613,11 @@ INSERT INTO `tb_request_collect_detail` (`id_detail`, `id_request`, `id_donasi`)
 (2, 2, 10),
 (3, 3, 11),
 (4, 4, 4),
-(5, 5, 11);
+(5, 5, 11),
+(6, 6, 11),
+(7, 6, 16),
+(8, 7, 16),
+(9, 8, 11);
 
 -- --------------------------------------------------------
 
@@ -7745,19 +7777,19 @@ ALTER TABLE `tb_collector`
 -- AUTO_INCREMENT for table `tb_donasi`
 --
 ALTER TABLE `tb_donasi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `tb_donasi_item`
 --
 ALTER TABLE `tb_donasi_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `tb_donasi_log`
 --
 ALTER TABLE `tb_donasi_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `tb_donatur`
@@ -7781,7 +7813,7 @@ ALTER TABLE `tb_kecamatan`
 -- AUTO_INCREMENT for table `tb_log_notifikasi`
 --
 ALTER TABLE `tb_log_notifikasi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `tb_program_donasi`
@@ -7799,19 +7831,19 @@ ALTER TABLE `tb_project`
 -- AUTO_INCREMENT for table `tb_request_collect`
 --
 ALTER TABLE `tb_request_collect`
-  MODIFY `id_request` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_request` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tb_request_collect_detail`
 --
 ALTER TABLE `tb_request_collect_detail`
-  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tb_temp_donasi`
 --
 ALTER TABLE `tb_temp_donasi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `tb_user`
