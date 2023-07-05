@@ -112,6 +112,7 @@ class Donatur extends CI_Controller {
         $tgl_lahir = $this->input->post("tgl_lahir", TRUE);
         $pekerjaan = $this->input->post("pekerjaan", TRUE);
         $pendidikan_terakhir = $this->input->post("pendidikan_terakhir", TRUE);
+        $jenis_kelamin = $this->input->post("jenis_kelamin", TRUE);
 
 
         try {
