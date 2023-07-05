@@ -11,9 +11,10 @@ class M_checker extends CI_Model
         $column_search = array('collector.nama_collector', 'request.status_collect');
         $order_by = array('request.datetime_collect' => 'desc');
 
-        $this->db->select('request.*, collector.nama_collector, COUNT(detail.id_donasi) as jumlah_transaksi, SUM(donasi.total_donasi) as total_transaksi, COUNT(donasi.nama_channel) as jumlah_branch');
+        $this->db->select('request.*, user.nama_user, collector.nama_collector, COUNT(detail.id_donasi) as jumlah_transaksi, SUM(donasi.total_donasi) as total_transaksi, COUNT(donasi.nama_channel) as jumlah_branch');
         $this->db->from('tb_request_collect as request');
-        $this->db->join('tb_collector as collector', 'request.id_collector = collector.id');
+        $this->db->join('tb_collector as collector', 'request.id_collector = collector.id', 'left');
+        $this->db->join('tb_user as user', 'user.email_user = request.email_user', 'left');
         $this->db->join('tb_request_collect_detail as detail', 'request.id_request = detail.id_request');
         $this->db->join('tb_donasi as donasi', 'donasi.id = detail.id_donasi');
 		$i = 0;

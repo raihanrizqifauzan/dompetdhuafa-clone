@@ -34,8 +34,13 @@ class Checker extends CI_Controller {
         foreach ($list as $key => $item) {
             $row = [];
 
+            $requester = $item->nama_collector;
+            if (empty($requester)) {
+                $requester = $item->nama_user;
+            }
+
             $no = $key+1;
-            $row[] = $item->nama_collector;
+            $row[] = $requester;
             $row[] = '<div class="text-center">'.$item->jumlah_branch.'</div>';
             $row[] = '<div class="text-end">'.$item->jumlah_transaksi.'</div>';
             $row[] = 'Rp'.number_format($item->total_transaksi, 2, ',', '.');

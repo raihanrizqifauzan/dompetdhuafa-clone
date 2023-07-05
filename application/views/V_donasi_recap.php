@@ -29,9 +29,6 @@
                         <div>
                             <b class="">Rekapan Donasi</b>
                         </div>
-                        <div>
-                            <a href="javascript:void(0)" class="btn text-light btn-warning mb-0 px-3">Cari</a>
-                        </div>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center p-4">

@@ -94,7 +94,7 @@ class M_donasi extends CI_Model
 
 	public function getDonasiById($id_donasi)
 	{
-        $this->db->select('tb_donasi.*, tb_donatur.*');
+        $this->db->select('tb_donasi.*, tb_donasi.kode_rekening as kode_rekening_donasi, tb_donatur.*');
         $this->db->from('tb_donasi');
         $this->db->join('tb_donatur', 'tb_donatur.email_donatur = tb_donasi.email_donatur');
         $this->db->where("tb_donasi.id", $id_donasi);
@@ -102,7 +102,7 @@ class M_donasi extends CI_Model
     }
 
     // Datatable Function //
-	public function _query_get_counter($filter = [])
+	public function _query_get_counter($filter = [], $tipe = "")
 	{
         $column_order = array(null);
         $column_search = array('tb_donasi.id', 'tb_donatur.nama_lengkap', 'tgl_donasi', 'status_donasi', 'total_donasi');
@@ -149,6 +149,9 @@ class M_donasi extends CI_Model
             $this->db->where('tb_donasi.total_donasi <=', $filter['jumlah_donasi_tertinggi']);
         }
         // End Get By Filter
+        if (!empty($tipe)) {
+            $this->db->where('tb_donasi.tipe', $tipe);
+        }
 
 		foreach ($column_search as $item) { // loop column 
 			if (@$_POST['search']['value']) { // if datatable send POST for search
@@ -170,23 +173,23 @@ class M_donasi extends CI_Model
         }
 	}
 
-	public function get_datatables_counter($filter = [])
+	public function get_datatables_counter($filter = [], $tipe = "")
 	{
-		$this->_query_get_counter($filter);
+		$this->_query_get_counter($filter, $tipe);
 		if (@$_POST['length'] != -1)
 			$this->db->limit(@$_POST['length'], @$_POST['start']);
 		$query = $this->db->get();
 		return $query->result();
 	}
 
-	public function get_total_counter_filtered($filter = [])
+	public function get_total_counter_filtered($filter = [], $tipe = "")
 	{
-		$this->_query_get_counter($filter);
+		$this->_query_get_counter($filter, $tipe);
 		$query = $this->db->get();
 		return $query->num_rows();
 	}
 
-	public function get_total_counter($filter = [])
+	public function get_total_counter($filter = [], $tipe = "")
 	{
         $this->db->from('tb_donasi');
 		return $this->db->count_all_results();
@@ -304,5 +307,15 @@ class M_donasi extends CI_Model
 	{
         $this->db->where("id", $id);
         return $this->db->delete("tb_donasi_item");
+    }
+
+    public function getDonasiTunaiDraft() {
+        $this->db->select("id");
+        $this->db->from("tb_donasi");
+        $this->db->where("tipe", "counter");
+        $this->db->where("status_donasi", "draft");
+        $data = $this->db->get()->result_array();
+        $arr = array_column($data, "id");
+        return $arr;
     }
 }
