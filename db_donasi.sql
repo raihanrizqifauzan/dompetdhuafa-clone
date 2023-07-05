@@ -90,7 +90,7 @@ CREATE TABLE `tb_donasi` (
   `status_donasi` enum('draft','pending','settle','request_void') NOT NULL DEFAULT 'draft',
   `keterangan_void` text DEFAULT NULL,
   `no_rekonsiliasi` text DEFAULT NULL,
-  `nama_channel` text NOT NULL DEFAULT 'BRANCH TEST 001'
+  `nama_channel` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
